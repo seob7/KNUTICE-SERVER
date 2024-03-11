@@ -29,7 +29,7 @@ public class JsoupCrawling {
      * 
      * by itstime0809.
      */
-    private static String board_url = "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardList.do";
+    private static final String board_url = KnutURL.GENERAL_NEWS;
 
     @Scheduled(fixedDelay = 1000) // 1초마다 실행
     public void crawlingBoard() throws IOException {
