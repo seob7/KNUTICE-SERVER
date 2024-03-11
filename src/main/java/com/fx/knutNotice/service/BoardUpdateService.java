@@ -6,21 +6,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BoardService {
+public class BoardUpdateService {
 
     private final BoardRepository boardRepository;
 
-    public List<Board> showBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        return new ArrayList<>(boardList);
+    public void updateCheck() {
+        List<Board> all = boardRepository.findAll();
     }
-
-
 
 }
