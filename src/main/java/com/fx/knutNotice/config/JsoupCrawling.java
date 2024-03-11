@@ -23,6 +23,12 @@ public class JsoupCrawling {
 
     private final BoardRepository boardRepository;
 
+    /**
+     * KNUT static url
+     * Please Check Git PR :)
+     * 
+     * by itstime0809.
+     */
     private static String board_url = "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardList.do";
 
     @Scheduled(fixedDelay = 1000) // 1초마다 실행
