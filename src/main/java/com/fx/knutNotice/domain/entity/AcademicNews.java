@@ -24,5 +24,6 @@ public class AcademicNews {
     private LocalDate date;
     private Long boardViews;
     private String file;
+    private boolean newCheck;
 
 }

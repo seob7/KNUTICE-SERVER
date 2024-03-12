@@ -26,5 +26,6 @@ public class GeneralNews {
     private LocalDate date;
     private Long boardViews;
     private String file;
+    private boolean newCheck;
 
 }
