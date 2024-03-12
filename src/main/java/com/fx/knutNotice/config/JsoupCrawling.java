@@ -1,7 +1,7 @@
 package com.fx.knutNotice.config;
 
-import com.fx.knutNotice.domain.BoardRepository;
-import com.fx.knutNotice.domain.entity.Board;
+import com.fx.knutNotice.domain.GeneralNewsRepository;
+import com.fx.knutNotice.domain.entity.GeneralNews;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -13,15 +13,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
 public class JsoupCrawling {
 
-    private final BoardRepository boardRepository;
+    private final GeneralNewsRepository generalNewsRepository;
 
     /**
      * KNUT static url
@@ -50,7 +48,7 @@ public class JsoupCrawling {
 
             //nttId가 empty인 경우 [공지]로 분류되어 있으므로 제외함
             if (nttId != null && !nttId.isEmpty()) {
-                Board board = Board.builder()
+                GeneralNews generalNews = GeneralNews.builder()
                         .nttId(Long.valueOf(nttId))
                         .boardNumber(Long.valueOf(boardNumber))
                         .title(title)
@@ -59,7 +57,7 @@ public class JsoupCrawling {
                         .boardViews(boardViews)
                         .file(file)
                         .build();
-                boardRepository.save(board);
+                generalNewsRepository.save(generalNews);
             }
         }
     }

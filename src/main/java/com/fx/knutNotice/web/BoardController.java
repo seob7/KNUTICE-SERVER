@@ -1,8 +1,7 @@
 package com.fx.knutNotice.web;
 
 import com.fx.knutNotice.service.BoardService;
-import com.fx.knutNotice.config.JsoupCrawling;
-import com.fx.knutNotice.domain.entity.Board;
+import com.fx.knutNotice.domain.entity.GeneralNews;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,8 @@ public class BoardController {
 
     @GetMapping()
     public ResponseEntity showBoardList() {
-        List<Board> boards = boardService.showBoardList();
-        return ResponseEntity.ok(boards);
+        List<GeneralNews> generalNews = boardService.showBoardList();
+        return ResponseEntity.ok(generalNews);
     }
 
 

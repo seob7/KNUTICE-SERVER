@@ -1,7 +1,7 @@
 package com.fx.knutNotice.service;
 
-import com.fx.knutNotice.domain.BoardRepository;
-import com.fx.knutNotice.domain.entity.Board;
+import com.fx.knutNotice.domain.GeneralNewsRepository;
+import com.fx.knutNotice.domain.entity.GeneralNews;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import java.util.List;
 @Slf4j
 public class BoardService {
 
-    private final BoardRepository boardRepository;
+    private final GeneralNewsRepository generalNewsRepository;
 
-    public List<Board> showBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        return new ArrayList<>(boardList);
+    public List<GeneralNews> showBoardList() {
+        List<GeneralNews> generalNewsList = generalNewsRepository.findAll();
+        return new ArrayList<>(generalNewsList);
     }
 
 

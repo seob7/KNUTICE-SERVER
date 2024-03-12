@@ -1,7 +1,7 @@
 package com.fx.knutNotice.service;
 
-import com.fx.knutNotice.domain.BoardRepository;
-import com.fx.knutNotice.domain.entity.Board;
+import com.fx.knutNotice.domain.GeneralNewsRepository;
+import com.fx.knutNotice.domain.entity.GeneralNews;
 import com.fx.knutNotice.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class BoardUpdateService {
 
 
-    private final BoardRepository boardRepository;
+    private final GeneralNewsRepository generalNewsRepository;
     private static PriorityQueue<Long> oldBoardNttIdSet = new PriorityQueue<>();
     private static List<Long> newNttIdSet = new ArrayList<>();
 
@@ -35,16 +35,16 @@ public class BoardUpdateService {
      * @param boardDTO
      */
     public void updateCheck(BoardDTO boardDTO) {
-        HashMap<Long, Board> crawlingBoardList = new HashMap<>();
-        List<Board> oldBoardList = boardRepository.findAll();
+        HashMap<Long, GeneralNews> crawlingBoardList = new HashMap<>();
+        List<GeneralNews> oldGeneralNewsList = generalNewsRepository.findAll();
 
-        for (Board newBoard : boardDTO.getBoardList())  {
-            crawlingBoardList.put(newBoard.getNttId(), newBoard);
-            newNttIdSet.add(newBoard.getNttId());
+        for (GeneralNews newGeneralNews : boardDTO.getGeneralNewsList())  {
+            crawlingBoardList.put(newGeneralNews.getNttId(), newGeneralNews);
+            newNttIdSet.add(newGeneralNews.getNttId());
         }
 
-        for (Board olderBoard : oldBoardList) {
-            oldBoardNttIdSet.add(olderBoard.getNttId());
+        for (GeneralNews olderGeneralNews : oldGeneralNewsList) {
+            oldBoardNttIdSet.add(olderGeneralNews.getNttId());
         }
 
         // O(N)
@@ -53,8 +53,8 @@ public class BoardUpdateService {
         if(newNttIdSet.size() > 0) {
 
             for (Long nttId : newNttIdSet) {
-                boardRepository.deleteBoard(oldBoardNttIdSet.poll());
-                boardRepository.save(crawlingBoardList.get(nttId));
+//                generalNewsRepository.deleteBoard(oldBoardNttIdSet.poll());
+                generalNewsRepository.save(crawlingBoardList.get(nttId));
                 oldBoardNttIdSet.clear();
             }
         }
