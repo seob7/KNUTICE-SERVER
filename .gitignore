@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Ignore .DS_Store meta data file for max os x ###
+.DS_Store
+.DS_Store/

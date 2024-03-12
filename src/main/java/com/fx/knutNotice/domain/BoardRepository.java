@@ -3,9 +3,8 @@ package com.fx.knutNotice.domain;
 import com.fx.knutNotice.domain.entity.Board;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -26,4 +25,9 @@ public class BoardRepository {
         return new ArrayList<>(store.values());
     }
 
+    public void deleteBoard(Long nttId) {
+        if (store.containsKey(nttId)) {
+            store.remove(nttId);
+        }
+    }
 }
