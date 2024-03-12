@@ -53,6 +53,7 @@ public class BoardUpdateService {
         if(newNttIdSet.size() > 0) {
 
             for (Long nttId : newNttIdSet) {
+                //2024-03-12 : JPA 적용으로 메서드가 변경되어 오류 해결을 위해 임시 주석처리!
 //                generalNewsRepository.deleteBoard(oldBoardNttIdSet.poll());
                 generalNewsRepository.save(crawlingBoardList.get(nttId));
                 oldBoardNttIdSet.clear();
