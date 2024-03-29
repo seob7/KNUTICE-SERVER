@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,14 +15,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class EventNews {
 
+
     @Id
     private Long nttId;
     private Long boardNumber;
     private String title;
-    private String dept;
-    private LocalDate date;
-    private Long boardViews;
-    private String file;
-    private boolean newCheck;
-    
+    private String newCheck;
+
 }
