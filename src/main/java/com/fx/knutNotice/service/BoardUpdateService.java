@@ -1,63 +1,105 @@
 package com.fx.knutNotice.service;
 
+import com.fx.knutNotice.config.JsoupCrawling;
+import com.fx.knutNotice.config.KnutURL;
+import com.fx.knutNotice.domain.AcademicNewsRepository;
+import com.fx.knutNotice.domain.EventNewsRepository;
 import com.fx.knutNotice.domain.GeneralNewsRepository;
+import com.fx.knutNotice.domain.ScholarshipNewsRepository;
+import com.fx.knutNotice.domain.entity.AcademicNews;
+import com.fx.knutNotice.domain.entity.EventNews;
 import com.fx.knutNotice.domain.entity.GeneralNews;
+import com.fx.knutNotice.domain.entity.ScholarshipNews;
 import com.fx.knutNotice.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import java.util.PriorityQueue;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BoardUpdateService {
 
-
     private final GeneralNewsRepository generalNewsRepository;
-    private static PriorityQueue<Long> oldBoardNttIdSet = new PriorityQueue<>();
-    private static List<Long> newNttIdSet = new ArrayList<>();
+    private final ScholarshipNewsRepository scholarshipNewsRepository;
+    private final EventNewsRepository eventNewsRepository;
+    private final AcademicNewsRepository academicNewsRepository;
+
+    private final JsoupCrawling jsoupCrawling;
+
+    @Transactional
+    @Scheduled(fixedDelay = 1000000) // 60분마다 실행
+    public void updateCheck() throws IOException {
+        updateNews(generalNewsRepository, KnutURL.GENERAL_NEWS);
+        updateNews(scholarshipNewsRepository, KnutURL.SCHOLARSHIP_NEWS);
+        updateNews(eventNewsRepository, KnutURL.EVENT_NEWS);
+        updateNews(academicNewsRepository, KnutURL.ACADEMIC_NEWS);
+    }
 
 
-    /**
-     * PriorityQueue 를 사용해서, 기존 데이터베이스에 있던 board 가지고 온다고 가정합니다.
-     * oldBoardNttIdSet은 항상 인덱스의 첫 번째 값은 가장 작은 nttId가 위치해 있으므로, 페이지 내 가장 끝 게시글의 nttId가 위치합니다.
-     *
-     * 새로운 게시글이 있는 경우에만, 끝에 있는 게시글을 삭제합니다.
-     * 새로은 게시글이 없는 경우에는, 게시글을 삭제하지 않습니다.
-     *
-     * 따라서, newNttIdSet의 개수가 0보다 크다면, 새로운 게시글이 있으므로, 가장 끝에 있는 게시글의 nttId부터 하나씩 삭제합니다.
-     *
-     * 마지막으로, 삭제연산 후 새로운 게시글을 데이터베이스에 저장합니다.
-     *
-     * @param boardDTO
-     */
-    public void updateCheck(BoardDTO boardDTO) {
-        HashMap<Long, GeneralNews> crawlingBoardList = new HashMap<>();
-        List<GeneralNews> oldGeneralNewsList = generalNewsRepository.findAll();
 
-        for (GeneralNews newGeneralNews : boardDTO.getGeneralNewsList())  {
-            crawlingBoardList.put(newGeneralNews.getNttId(), newGeneralNews);
-            newNttIdSet.add(newGeneralNews.getNttId());
-        }
 
-        for (GeneralNews olderGeneralNews : oldGeneralNewsList) {
-            oldBoardNttIdSet.add(olderGeneralNews.getNttId());
-        }
+    private <T> void updateNews(JpaRepository<T, Long> repository, KnutURL url) throws IOException {
+        List<BoardDTO> newList = jsoupCrawling.crawlBoard(url.URL());
+        Set<Long> oldNttIds = repository.findAll().stream()
+                .map(entity -> {
+                    if (entity instanceof AcademicNews) {
+                        return ((AcademicNews) entity).getNttId();
+                    } else if (entity instanceof EventNews) {
+                        return ((EventNews) entity).getNttId();
+                    } else if (entity instanceof GeneralNews) {
+                        return ((GeneralNews) entity).getNttId();
+                    } else if (entity instanceof ScholarshipNews) {
+                        return ((ScholarshipNews) entity).getNttId();
+                    }
+                    return null;
+                })
+                .collect(Collectors.toSet());
+        updateNews(repository, newList, oldNttIds);
+    }
 
-        // O(N)
-        newNttIdSet.removeAll(oldBoardNttIdSet);
-
-        if(newNttIdSet.size() > 0) {
-
-            for (Long nttId : newNttIdSet) {
-                //2024-03-12 : JPA 적용으로 메서드가 변경되어 오류 해결을 위해 임시 주석처리!
-//                generalNewsRepository.deleteBoard(oldBoardNttIdSet.poll());
-                generalNewsRepository.save(crawlingBoardList.get(nttId));
-                oldBoardNttIdSet.clear();
+    private <T> void updateNews(JpaRepository<T, Long> repository, List<BoardDTO> newList, Set<Long> oldNttIds) {
+        for (BoardDTO newBoard : newList) {
+            boolean isNew = !oldNttIds.contains(newBoard.getNttId());
+            T newEntity = null;
+            if (repository instanceof AcademicNewsRepository) {
+                newEntity = (T) AcademicNews.builder()
+                        .nttId(newBoard.getNttId())
+                        .boardNumber(newBoard.getBoardNumber())
+                        .title(newBoard.getTitle())
+                        .newCheck(Boolean.toString(isNew))
+                        .build();
+            } else if (repository instanceof EventNewsRepository) {
+                newEntity = (T) EventNews.builder()
+                        .nttId(newBoard.getNttId())
+                        .boardNumber(newBoard.getBoardNumber())
+                        .title(newBoard.getTitle())
+                        .newCheck(Boolean.toString(isNew))
+                        .build();
+            } else if (repository instanceof GeneralNewsRepository) {
+                newEntity = (T) GeneralNews.builder()
+                        .nttId(newBoard.getNttId())
+                        .boardNumber(newBoard.getBoardNumber())
+                        .title(newBoard.getTitle())
+                        .newCheck(Boolean.toString(isNew))
+                        .build();
+            } else if (repository instanceof ScholarshipNewsRepository) {
+                newEntity = (T) ScholarshipNews.builder()
+                        .nttId(newBoard.getNttId())
+                        .boardNumber(newBoard.getBoardNumber())
+                        .title(newBoard.getTitle())
+                        .newCheck(Boolean.toString(isNew))
+                        .build();
             }
+            repository.save(newEntity);
         }
     }
 }

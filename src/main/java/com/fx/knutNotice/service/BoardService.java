@@ -26,8 +26,8 @@ public class BoardService {
     private final AcademicNewsRepository academicNewsRepository;
 
     public List<GeneralNews> showGeneralNews() { //일반공지
-        List<GeneralNews> generalNewsList = generalNewsRepository.findAll();
-        return new ArrayList<>(generalNewsList);
+        List<GeneralNews> generalNews = generalNewsRepository.findAll();
+        return new ArrayList<>(generalNews);
     }
 
     public List<ScholarshipNews> showScholarshipNews() { //장학안내
