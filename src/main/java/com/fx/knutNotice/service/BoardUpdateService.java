@@ -36,7 +36,7 @@ public class BoardUpdateService {
     private final JsoupCrawling jsoupCrawling;
 
     @Transactional
-    @Scheduled(fixedDelay = 1000000) // 60분마다 실행
+    @Scheduled(fixedDelay = 1000 * 60 * 60)// 60분마다 실행
     public void updateCheck() throws IOException {
         updateNews(generalNewsRepository, KnutURL.GENERAL_NEWS);
         updateNews(scholarshipNewsRepository, KnutURL.SCHOLARSHIP_NEWS);
