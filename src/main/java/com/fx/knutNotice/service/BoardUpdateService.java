@@ -11,6 +11,10 @@ import com.fx.knutNotice.domain.entity.EventNews;
 import com.fx.knutNotice.domain.entity.GeneralNews;
 import com.fx.knutNotice.domain.entity.ScholarshipNews;
 import com.fx.knutNotice.dto.BoardDTO;
+import com.fx.knutNotice.service.NewsUpdateService.AcademicNewsUpdateService;
+import com.fx.knutNotice.service.NewsUpdateService.EventNewsUpdateService;
+import com.fx.knutNotice.service.NewsUpdateService.GeneralNewsUpdateService;
+import com.fx.knutNotice.service.NewsUpdateService.ScholarshipNewsUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,78 +32,26 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BoardUpdateService {
 
-    private final GeneralNewsRepository generalNewsRepository;
-    private final ScholarshipNewsRepository scholarshipNewsRepository;
-    private final EventNewsRepository eventNewsRepository;
-    private final AcademicNewsRepository academicNewsRepository;
+    private final GeneralNewsUpdateService generalNewsUpdateService;
+    private final EventNewsUpdateService eventNewsUpdateService;
+    private final AcademicNewsUpdateService academicNewsUpdateService;
+    private final ScholarshipNewsUpdateService scholarshipNewsUpdateService;
 
     private final JsoupCrawling jsoupCrawling;
 
     @Transactional
     @Scheduled(fixedDelay = 1000 * 60 * 60)// 60분마다 실행
     public void updateCheck() throws IOException {
-        updateNews(generalNewsRepository, KnutURL.GENERAL_NEWS);
-        updateNews(scholarshipNewsRepository, KnutURL.SCHOLARSHIP_NEWS);
-        updateNews(eventNewsRepository, KnutURL.EVENT_NEWS);
-        updateNews(academicNewsRepository, KnutURL.ACADEMIC_NEWS);
-    }
+        List<BoardDTO> generalNewsList = jsoupCrawling.crawlBoard(KnutURL.GENERAL_NEWS.URL());
+        generalNewsUpdateService.newsCheck(generalNewsList);
 
+        List<BoardDTO> eventNewsList = jsoupCrawling.crawlBoard(KnutURL.EVENT_NEWS.URL());
+        eventNewsUpdateService.newsCheck(eventNewsList);
 
+        List<BoardDTO> academicNewsList = jsoupCrawling.crawlBoard(KnutURL.ACADEMIC_NEWS.URL());
+        academicNewsUpdateService.newsCheck(academicNewsList);
 
-
-    private <T> void updateNews(JpaRepository<T, Long> repository, KnutURL url) throws IOException {
-        List<BoardDTO> newList = jsoupCrawling.crawlBoard(url.URL());
-        Set<Long> oldNttIds = repository.findAll().stream()
-                .map(entity -> {
-                    if (entity instanceof AcademicNews) {
-                        return ((AcademicNews) entity).getNttId();
-                    } else if (entity instanceof EventNews) {
-                        return ((EventNews) entity).getNttId();
-                    } else if (entity instanceof GeneralNews) {
-                        return ((GeneralNews) entity).getNttId();
-                    } else if (entity instanceof ScholarshipNews) {
-                        return ((ScholarshipNews) entity).getNttId();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toSet());
-        updateNews(repository, newList, oldNttIds);
-    }
-
-    private <T> void updateNews(JpaRepository<T, Long> repository, List<BoardDTO> newList, Set<Long> oldNttIds) {
-        for (BoardDTO newBoard : newList) {
-            boolean isNew = !oldNttIds.contains(newBoard.getNttId());
-            T newEntity = null;
-            if (repository instanceof AcademicNewsRepository) {
-                newEntity = (T) AcademicNews.builder()
-                        .nttId(newBoard.getNttId())
-                        .boardNumber(newBoard.getBoardNumber())
-                        .title(newBoard.getTitle())
-                        .newCheck(Boolean.toString(isNew))
-                        .build();
-            } else if (repository instanceof EventNewsRepository) {
-                newEntity = (T) EventNews.builder()
-                        .nttId(newBoard.getNttId())
-                        .boardNumber(newBoard.getBoardNumber())
-                        .title(newBoard.getTitle())
-                        .newCheck(Boolean.toString(isNew))
-                        .build();
-            } else if (repository instanceof GeneralNewsRepository) {
-                newEntity = (T) GeneralNews.builder()
-                        .nttId(newBoard.getNttId())
-                        .boardNumber(newBoard.getBoardNumber())
-                        .title(newBoard.getTitle())
-                        .newCheck(Boolean.toString(isNew))
-                        .build();
-            } else if (repository instanceof ScholarshipNewsRepository) {
-                newEntity = (T) ScholarshipNews.builder()
-                        .nttId(newBoard.getNttId())
-                        .boardNumber(newBoard.getBoardNumber())
-                        .title(newBoard.getTitle())
-                        .newCheck(Boolean.toString(isNew))
-                        .build();
-            }
-            repository.save(newEntity);
-        }
+        List<BoardDTO> scholarshipNewsList = jsoupCrawling.crawlBoard(KnutURL.SCHOLARSHIP_NEWS.URL());
+        scholarshipNewsUpdateService.newsCheck(scholarshipNewsList);
     }
 }
