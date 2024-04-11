@@ -1,7 +1,7 @@
-package com.fx.knutNotice.service.NewsUpdateService;
+package com.fx.knutNotice.service.newsUpdateService;
 
-import com.fx.knutNotice.domain.GeneralNewsRepository;
-import com.fx.knutNotice.domain.entity.GeneralNews;
+import com.fx.knutNotice.domain.EventNewsRepository;
+import com.fx.knutNotice.domain.entity.EventNews;
 import com.fx.knutNotice.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,43 +12,43 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class GeneralNewsUpdateService {
+public class EventNewsUpdateService {
 
-    private final GeneralNewsRepository generalNewsRepository;
+    private final EventNewsRepository eventNewsRepository;
 
-    public Set<Long> extractNttIdsFromGeneralNewsList(List<GeneralNews> generalNewsList) {
-        return generalNewsList.stream()
-                .map(GeneralNews::getNttId)
+    public Set<Long> extractNttIdsFromEventNewsList(List<EventNews> eventNewsList) {
+        return eventNewsList.stream()
+                .map(EventNews::getNttId)
                 .collect(Collectors.toSet());
     }
 
     public void newsCheck(List<BoardDTO> newList) {
-        List<GeneralNews> oldList = generalNewsRepository.findAll();
-        Set<Long> oldNttIds = extractNttIdsFromGeneralNewsList(oldList);
+        List<EventNews> oldList = eventNewsRepository.findAll();
+        Set<Long> oldNttIds = extractNttIdsFromEventNewsList(oldList);
 
         //기존 데이터 false로
-        generalNewsRepository.updateNewCheckToFalse();
+        eventNewsRepository.updateNewCheckToFalse();
 
         int newCount = 0;//새로운 글 개수
 
         //새로운 데이터 저장
         for (BoardDTO boardDTO : newList) {
             if (!oldNttIds.contains(boardDTO.getNttId())) {
-                GeneralNews newEntity = GeneralNews.builder()
+                EventNews newEntity = EventNews.builder()
                         .nttId(boardDTO.getNttId())
                         .boardNumber(boardDTO.getBoardNumber())
                         .title(boardDTO.getTitle())
                         .newCheck("true")
                         .build();
-                generalNewsRepository.save(newEntity);
+                eventNewsRepository.save(newEntity);
                 newCount++;
             }
         }
 
         //boardNumber가 가장 작은 데이터를 업데이트된 개수만큼 글 삭제
         for (int i = 0; i < newCount; i++) {
-            Long minBoardNumber = generalNewsRepository.findMinBoardNumber();
-            generalNewsRepository.deleteByBoardNumber(minBoardNumber);
+            Long minBoardNumber = eventNewsRepository.findMinBoardNumber();
+            eventNewsRepository.deleteByBoardNumber(minBoardNumber);
         }
     }
 }
