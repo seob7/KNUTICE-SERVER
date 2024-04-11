@@ -1,4 +1,4 @@
-package com.fx.knutNotice.service.NewsUpdateService;
+package com.fx.knutNotice.service.newsUpdateService;
 
 import com.fx.knutNotice.domain.AcademicNewsRepository;
 import com.fx.knutNotice.domain.entity.AcademicNews;

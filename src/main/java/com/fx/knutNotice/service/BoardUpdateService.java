@@ -2,30 +2,19 @@ package com.fx.knutNotice.service;
 
 import com.fx.knutNotice.config.JsoupCrawling;
 import com.fx.knutNotice.config.KnutURL;
-import com.fx.knutNotice.domain.AcademicNewsRepository;
-import com.fx.knutNotice.domain.EventNewsRepository;
-import com.fx.knutNotice.domain.GeneralNewsRepository;
-import com.fx.knutNotice.domain.ScholarshipNewsRepository;
-import com.fx.knutNotice.domain.entity.AcademicNews;
-import com.fx.knutNotice.domain.entity.EventNews;
-import com.fx.knutNotice.domain.entity.GeneralNews;
-import com.fx.knutNotice.domain.entity.ScholarshipNews;
 import com.fx.knutNotice.dto.BoardDTO;
-import com.fx.knutNotice.service.NewsUpdateService.AcademicNewsUpdateService;
-import com.fx.knutNotice.service.NewsUpdateService.EventNewsUpdateService;
-import com.fx.knutNotice.service.NewsUpdateService.GeneralNewsUpdateService;
-import com.fx.knutNotice.service.NewsUpdateService.ScholarshipNewsUpdateService;
+import com.fx.knutNotice.service.newsUpdateService.AcademicNewsUpdateService;
+import com.fx.knutNotice.service.newsUpdateService.EventNewsUpdateService;
+import com.fx.knutNotice.service.newsUpdateService.GeneralNewsUpdateService;
+import com.fx.knutNotice.service.newsUpdateService.ScholarshipNewsUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
