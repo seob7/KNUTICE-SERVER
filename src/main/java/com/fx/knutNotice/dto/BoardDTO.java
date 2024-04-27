@@ -12,5 +12,7 @@ public class BoardDTO {
     private Long nttId;
     private Long boardNumber;
     private String title;
+    private String contentURL;
+    private String content;
     private String newCheck;
 }
