@@ -38,6 +38,8 @@ public class GeneralNewsUpdateService {
                         .nttId(boardDTO.getNttId())
                         .boardNumber(boardDTO.getBoardNumber())
                         .title(boardDTO.getTitle())
+                        .contentURL(boardDTO.getContentURL())
+                        .content(boardDTO.getContent())
                         .newCheck("true")
                         .build();
                 generalNewsRepository.save(newEntity);
