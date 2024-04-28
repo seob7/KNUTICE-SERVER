@@ -1,7 +1,7 @@
 package com.fx.knutNotice.service;
 
-import com.fx.knutNotice.config.JsoupCrawling;
-import com.fx.knutNotice.config.KnutURL;
+import com.fx.knutNotice.crawler.KnutCrawler;
+import com.fx.knutNotice.common.KnutURL;
 import com.fx.knutNotice.dto.BoardDTO;
 import com.fx.knutNotice.service.newsUpdateService.AcademicNewsUpdateService;
 import com.fx.knutNotice.service.newsUpdateService.EventNewsUpdateService;
@@ -26,12 +26,12 @@ public class BoardUpdateService {
     private final AcademicNewsUpdateService academicNewsUpdateService;
     private final ScholarshipNewsUpdateService scholarshipNewsUpdateService;
 
-    private final JsoupCrawling jsoupCrawling;
+    private final KnutCrawler knutCrawler;
 
     @Transactional
     @Scheduled(fixedDelay = 1000 * 60 * 60)// 60분마다 실행
     public void updateCheck() throws IOException {
-        List<BoardDTO> generalNewsList = jsoupCrawling.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
+        List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
                 KnutURL.GENERAL_NEWS.articleURL());
         generalNewsUpdateService.newsCheck(generalNewsList);
 
