@@ -39,3 +39,6 @@ out/
 ### Ignore .DS_Store meta data file for max os x ###
 .DS_Store
 .DS_Store/
+
+### Firebase service key ###
+firebase_service_key.json
