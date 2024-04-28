@@ -1,4 +1,4 @@
-package com.fx.knutNotice.config;
+package com.fx.knutNotice.common;
 
 public enum KnutURL {
 

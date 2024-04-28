@@ -1,4 +1,4 @@
-package com.fx.knutNotice.config;
+package com.fx.knutNotice.crawler;
 
 import com.fx.knutNotice.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class JsoupCrawling {
+public class KnutCrawler {
 
     public List<BoardDTO> crawlBoard(String boardURL, String articleURL) throws IOException {
         log.info("실행중...");
