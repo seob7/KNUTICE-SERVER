@@ -27,48 +27,65 @@ public class TestBoardData {
     @Test
     void addBoardData() {
 
-        for (int i = 0; i < 10; i++) {
-            GeneralNews generalNews = GeneralNews.builder()
-                .nttId((long) i)
-                .boardNumber((long) i)
-                .title( i + "번 째 게시글 제목")
-                .contentURL( i + "번 째 URL")
-                .content( i + "번 째 글내용")
-                .newCheck("true")
-                .build();
-            generalNewsRepository.save(generalNews);
+        long generalCount = generalNewsRepository.count();
+        long eventCount = eventNewsRepository.count();
+        long scholarshipCount = scholarshipNewsRepository.count();
+        long academicCount = academicNewsRepository.count();
 
-            EventNews eventNews = EventNews.builder()
-                .nttId((long) i)
-                .boardNumber((long) i)
-                .title( i + "번 째 게시글 제목")
-                .contentURL( i + "번 째 URL")
-                .content( i + "번 째 글내용")
-                .newCheck("true")
-                .build();
-            eventNewsRepository.save(eventNews);
+        if (generalCount != 10) {
+            for (int i = 1; i <= 10; i++) {
+                GeneralNews generalNews = GeneralNews.builder()
+                    .nttId((long) i)
+                    .boardNumber((long) i)
+                    .title(i + "번 째 게시글 제목")
+                    .contentURL(i + "번 째 URL")
+                    .content(i + "번 째 글내용")
+                    .newCheck("true")
+                    .build();
+                generalNewsRepository.save(generalNews);
+            }
+        }
 
-            ScholarshipNews scholarshipNews = ScholarshipNews.builder()
-                .nttId((long) i)
-                .boardNumber((long) i)
-                .title( i + "번 째 게시글 제목")
-                .contentURL( i + "번 째 URL")
-                .content( i + "번 째 글내용")
-                .newCheck("true")
-                .build();
-            scholarshipNewsRepository.save(scholarshipNews);
+        if (eventCount != 10) {
+            for (int i = 1; i <= 10; i++) {
+                EventNews eventNews = EventNews.builder()
+                    .nttId((long) i)
+                    .boardNumber((long) i)
+                    .title(i + "번 째 게시글 제목")
+                    .contentURL(i + "번 째 URL")
+                    .content(i + "번 째 글내용")
+                    .newCheck("true")
+                    .build();
+                eventNewsRepository.save(eventNews);
+            }
+        }
 
-            AcademicNews academicNews = AcademicNews.builder()
-                .nttId((long) i)
-                .boardNumber((long) i)
-                .title( i + "번 째 게시글 제목")
-                .contentURL( i + "번 째 URL")
-                .content( i + "번 째 글내용")
-                .newCheck("true")
-                .build();
-            academicNewsRepository.save(academicNews);
+        if (scholarshipCount != 10) {
+            for (int i = 1; i <= 10; i++) {
+                ScholarshipNews scholarshipNews = ScholarshipNews.builder()
+                    .nttId((long) i)
+                    .boardNumber((long) i)
+                    .title(i + "번 째 게시글 제목")
+                    .contentURL(i + "번 째 URL")
+                    .content(i + "번 째 글내용")
+                    .newCheck("true")
+                    .build();
+                scholarshipNewsRepository.save(scholarshipNews);
+            }
+        }
+
+        if (academicCount != 10) {
+            for (int i = 1; i <= 10; i++) {
+                AcademicNews academicNews = AcademicNews.builder()
+                    .nttId((long) i)
+                    .boardNumber((long) i)
+                    .title(i + "번 째 게시글 제목")
+                    .contentURL(i + "번 째 URL")
+                    .content(i + "번 째 글내용")
+                    .newCheck("true")
+                    .build();
+                academicNewsRepository.save(academicNews);
+            }
         }
     }
-
-
 }
