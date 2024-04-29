@@ -18,8 +18,8 @@ public class AcademicNewsUpdateService {
 
     public Set<Long> extractNttIdsFromAcademicNewsList(List<AcademicNews> academicNewsList) {
         return academicNewsList.stream()
-                .map(AcademicNews::getNttId)
-                .collect(Collectors.toSet());
+            .map(AcademicNews::getNttId)
+            .collect(Collectors.toSet());
     }
 
     public void newsCheck(List<BoardDTO> newList) {
@@ -35,11 +35,16 @@ public class AcademicNewsUpdateService {
         for (BoardDTO boardDTO : newList) {
             if (!oldNttIds.contains(boardDTO.getNttId())) {
                 AcademicNews newEntity = AcademicNews.builder()
-                        .nttId(boardDTO.getNttId())
-                        .boardNumber(boardDTO.getBoardNumber())
-                        .title(boardDTO.getTitle())
-                        .newCheck("true")
-                        .build();
+                    .nttId(boardDTO.getNttId())
+                    .boardNumber(boardDTO.getBoardNumber())
+                    .title(boardDTO.getTitle())
+                    .contentURL(boardDTO.getContentURL())
+                    .content(boardDTO.getContent())
+                    .contentImage(boardDTO.getContentImage())
+                    .departName(boardDTO.getDepartName())
+                    .registrationDate(boardDTO.getRegistrationDate())
+                    .newCheck("true")
+                    .build();
                 academicNewsRepository.save(newEntity);
                 newCount++;
             }
