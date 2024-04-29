@@ -33,6 +33,9 @@ public class KnutCrawler {
             if (!nttId.isEmpty()) {
                 String boardNumber = content.select("td.problem_number").text();
                 String title = content.select("td.left > div > div > form > input[type=submit]").val();
+                String departName = content.select("td.problem_name").text();
+                String registrationDate = content.select("td.date").text();
+
 
                 //nttId에 대한 내용 크롤링
                 //nttId에 해당하는 게시글 URL
@@ -40,6 +43,8 @@ public class KnutCrawler {
                 Document articleDocument = Jsoup.connect(contentURL).get();
                 Elements articleContent = articleDocument.select("div.bbs_detail_content");
                 String detailContent = articleContent.text();
+                String contentImage = articleContent.select("div.bbs_detail_content img").attr("src"); //이미지 추출
+
 
                 boardDTOList.add(BoardDTO.builder()
                         .nttId(Long.valueOf(nttId))
@@ -47,6 +52,9 @@ public class KnutCrawler {
                         .title(title)
                         .contentURL(contentURL)
                         .content(detailContent)
+                        .contentImage(contentImage)
+                        .departName(departName)
+                        .registrationDate(registrationDate)
                         .build());
             }
         }
