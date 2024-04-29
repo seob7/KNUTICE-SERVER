@@ -14,5 +14,8 @@ public class BoardDTO {
     private String title;
     private String contentURL;
     private String content;
+    private String contentImage;
+    private String departName;
+    private String registrationDate;
     private String newCheck;
 }

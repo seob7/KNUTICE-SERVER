@@ -6,13 +6,13 @@ public enum KnutURL {
             "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardArticle.do?bbsId=BBSMSTR_000000000059",
             "BBSMSTR_000000000059"), //일반소식
     SCHOLARSHIP_NEWS("https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000060/selectBoardList.do",
-            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000060/selectBoardArticle.do",
+            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000060/selectBoardArticle.do?bbsId=BBSMSTR_000000000060",
             "BBSMSTR_000000000060"), //장학안내
     EVENT_NEWS("https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000061/selectBoardList.do",
-            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000061/selectBoardArticle.do",
+            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000061/selectBoardArticle.do?bbsId=BBSMSTR_000000000061",
             "BBSMSTR_000000000061"), //행사안내
     ACADEMIC_NEWS("https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000055/selectBoardList.do",
-            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000055/selectBoardArticle.do",
+            "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000055/selectBoardArticle.do?bbsId=BBSMSTR_000000000055",
             "BBSMSTR_000000000055"); //학사공지사항
 
     private final String url;

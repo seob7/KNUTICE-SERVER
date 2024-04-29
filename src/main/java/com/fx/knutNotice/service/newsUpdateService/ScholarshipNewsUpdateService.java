@@ -16,10 +16,11 @@ public class ScholarshipNewsUpdateService {
 
     private final ScholarshipNewsRepository scholarshipNewsRepository;
 
-    public Set<Long> extractNttIdsFromScholarshipNewsList(List<ScholarshipNews> scholarshipNewsList) {
+    public Set<Long> extractNttIdsFromScholarshipNewsList(
+        List<ScholarshipNews> scholarshipNewsList) {
         return scholarshipNewsList.stream()
-                .map(ScholarshipNews::getNttId)
-                .collect(Collectors.toSet());
+            .map(ScholarshipNews::getNttId)
+            .collect(Collectors.toSet());
     }
 
     public void newsCheck(List<BoardDTO> newList) {
@@ -35,11 +36,16 @@ public class ScholarshipNewsUpdateService {
         for (BoardDTO boardDTO : newList) {
             if (!oldNttIds.contains(boardDTO.getNttId())) {
                 ScholarshipNews newEntity = ScholarshipNews.builder()
-                        .nttId(boardDTO.getNttId())
-                        .boardNumber(boardDTO.getBoardNumber())
-                        .title(boardDTO.getTitle())
-                        .newCheck("true")
-                        .build();
+                    .nttId(boardDTO.getNttId())
+                    .boardNumber(boardDTO.getBoardNumber())
+                    .title(boardDTO.getTitle())
+                    .contentURL(boardDTO.getContentURL())
+                    .content(boardDTO.getContent())
+                    .contentImage(boardDTO.getContentImage())
+                    .departName(boardDTO.getDepartName())
+                    .registrationDate(boardDTO.getRegistrationDate())
+                    .newCheck("true")
+                    .build();
                 scholarshipNewsRepository.save(newEntity);
                 newCount++;
             }

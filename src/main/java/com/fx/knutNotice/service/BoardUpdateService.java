@@ -35,16 +35,16 @@ public class BoardUpdateService {
                 KnutURL.GENERAL_NEWS.articleURL());
         generalNewsUpdateService.newsCheck(generalNewsList);
 
-//        List<BoardDTO> eventNewsList = jsoupCrawling.crawlBoard(KnutURL.EVENT_NEWS.URL(),
-//                KnutURL.EVENT_NEWS.articleURL());
-//        eventNewsUpdateService.newsCheck(eventNewsList);
-//
-//        List<BoardDTO> academicNewsList = jsoupCrawling.crawlBoard(KnutURL.ACADEMIC_NEWS.URL(),
-//                KnutURL.ACADEMIC_NEWS.articleURL());
-//        academicNewsUpdateService.newsCheck(academicNewsList);
-//
-//        List<BoardDTO> scholarshipNewsList = jsoupCrawling.crawlBoard(KnutURL.SCHOLARSHIP_NEWS.URL(),
-//                KnutURL.SCHOLARSHIP_NEWS.articleURL());
-//        scholarshipNewsUpdateService.newsCheck(scholarshipNewsList);
+        List<BoardDTO> eventNewsList = knutCrawler.crawlBoard(KnutURL.EVENT_NEWS.URL(),
+                KnutURL.EVENT_NEWS.articleURL());
+        eventNewsUpdateService.newsCheck(eventNewsList);
+
+        List<BoardDTO> academicNewsList = knutCrawler.crawlBoard(KnutURL.ACADEMIC_NEWS.URL(),
+                KnutURL.ACADEMIC_NEWS.articleURL());
+        academicNewsUpdateService.newsCheck(academicNewsList);
+
+        List<BoardDTO> scholarshipNewsList = knutCrawler.crawlBoard(KnutURL.SCHOLARSHIP_NEWS.URL(),
+                KnutURL.SCHOLARSHIP_NEWS.articleURL());
+        scholarshipNewsUpdateService.newsCheck(scholarshipNewsList);
     }
 }

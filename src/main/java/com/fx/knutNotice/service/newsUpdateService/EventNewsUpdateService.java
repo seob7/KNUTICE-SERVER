@@ -18,8 +18,8 @@ public class EventNewsUpdateService {
 
     public Set<Long> extractNttIdsFromEventNewsList(List<EventNews> eventNewsList) {
         return eventNewsList.stream()
-                .map(EventNews::getNttId)
-                .collect(Collectors.toSet());
+            .map(EventNews::getNttId)
+            .collect(Collectors.toSet());
     }
 
     public void newsCheck(List<BoardDTO> newList) {
@@ -35,11 +35,16 @@ public class EventNewsUpdateService {
         for (BoardDTO boardDTO : newList) {
             if (!oldNttIds.contains(boardDTO.getNttId())) {
                 EventNews newEntity = EventNews.builder()
-                        .nttId(boardDTO.getNttId())
-                        .boardNumber(boardDTO.getBoardNumber())
-                        .title(boardDTO.getTitle())
-                        .newCheck("true")
-                        .build();
+                    .nttId(boardDTO.getNttId())
+                    .boardNumber(boardDTO.getBoardNumber())
+                    .title(boardDTO.getTitle())
+                    .contentURL(boardDTO.getContentURL())
+                    .content(boardDTO.getContent())
+                    .contentImage(boardDTO.getContentImage())
+                    .departName(boardDTO.getDepartName())
+                    .registrationDate(boardDTO.getRegistrationDate())
+                    .newCheck("true")
+                    .build();
                 eventNewsRepository.save(newEntity);
                 newCount++;
             }
