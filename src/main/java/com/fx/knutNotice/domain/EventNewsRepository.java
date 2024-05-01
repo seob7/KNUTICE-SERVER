@@ -16,4 +16,6 @@ public interface EventNewsRepository extends JpaRepository<EventNews, Long> {
     @Query(value = "SELECT MIN(e.boardNumber) FROM EventNews e")
     Long findMinBoardNumber();
 
+    @Query(value = "SELECT MAX(e.nttId) FROM EventNews e")
+    Long findMaxNttId();
 }

@@ -16,4 +16,6 @@ public interface GeneralNewsRepository extends JpaRepository<GeneralNews, Long> 
     @Query(value = "SELECT MIN(g.boardNumber) FROM GeneralNews g")
     Long findMinBoardNumber();
 
+    @Query(value = "SELECT MAX(g.nttId) FROM GeneralNews g")
+    Long findMaxNttId();
 }

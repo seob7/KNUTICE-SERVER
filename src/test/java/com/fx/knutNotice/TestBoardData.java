@@ -32,8 +32,8 @@ public class TestBoardData {
         long scholarshipCount = scholarshipNewsRepository.count();
         long academicCount = academicNewsRepository.count();
 
-        if (generalCount != 10) {
-            for (int i = 1; i <= 10; i++) {
+        if (generalCount != 100) {
+            for (int i = 1; i <= 100; i++) {
                 GeneralNews generalNews = GeneralNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
@@ -46,8 +46,8 @@ public class TestBoardData {
             }
         }
 
-        if (eventCount != 10) {
-            for (int i = 1; i <= 10; i++) {
+        if (eventCount != 100) {
+            for (int i = 1; i <= 100; i++) {
                 EventNews eventNews = EventNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
@@ -60,8 +60,8 @@ public class TestBoardData {
             }
         }
 
-        if (scholarshipCount != 10) {
-            for (int i = 1; i <= 10; i++) {
+        if (scholarshipCount != 100) {
+            for (int i = 1; i <= 100; i++) {
                 ScholarshipNews scholarshipNews = ScholarshipNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
@@ -74,8 +74,8 @@ public class TestBoardData {
             }
         }
 
-        if (academicCount != 10) {
-            for (int i = 1; i <= 10; i++) {
+        if (academicCount != 100) {
+            for (int i = 1; i <= 100; i++) {
                 AcademicNews academicNews = AcademicNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
