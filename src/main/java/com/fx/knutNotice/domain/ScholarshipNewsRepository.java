@@ -15,4 +15,7 @@ public interface ScholarshipNewsRepository extends JpaRepository<ScholarshipNews
 
     @Query(value = "SELECT MIN(s.boardNumber) FROM ScholarshipNews s")
     Long findMinBoardNumber();
+
+    @Query(value = "SELECT MAX(s.nttId) FROM ScholarshipNews s")
+    Long findMaxNttId();
 }

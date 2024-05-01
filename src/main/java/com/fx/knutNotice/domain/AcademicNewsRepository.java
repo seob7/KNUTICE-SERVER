@@ -15,4 +15,7 @@ public interface AcademicNewsRepository  extends JpaRepository<AcademicNews, Lon
 
     @Query(value = "SELECT MIN(a.boardNumber) FROM AcademicNews a")
     Long findMinBoardNumber();
+
+    @Query(value = "SELECT MAX(a.nttId) FROM AcademicNews a")
+    Long findMaxNttId();
 }
