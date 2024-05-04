@@ -3,6 +3,7 @@ package com.fx.knutNotice.service.newsUpdateService;
 import com.fx.knutNotice.domain.AcademicNewsRepository;
 import com.fx.knutNotice.domain.entity.AcademicNews;
 import com.fx.knutNotice.dto.BoardDTO;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,13 @@ public class AcademicNewsUpdateService {
     private final AcademicNewsRepository academicNewsRepository;
     private static long maxNttId = 0L;
 
-    public void newsCheck(List<BoardDTO> newList) {
+    public List<String> newsCheck(List<BoardDTO> newList) {
+
+        List<String> titleList = new ArrayList<>();
+
         //재시작시 사용
         if (maxNttId == 0L) {
-            maxNttId = academicNewsRepository.findMaxNttId();
+            maxNttId = findMaxNttId();
         }
 
         //기존 데이터 false로
@@ -42,6 +46,9 @@ public class AcademicNewsUpdateService {
                     .build();
                 academicNewsRepository.save(newEntity);
                 newCount++;
+
+                // FCM발송을 위해 업데이트된 제목만 LIST에 추가.
+                titleList.add(boardDTO.getTitle());
             }
         }
 
@@ -52,5 +59,12 @@ public class AcademicNewsUpdateService {
             Long minBoardNumber = academicNewsRepository.findMinBoardNumber();
             academicNewsRepository.deleteByBoardNumber(minBoardNumber);
         }
+
+        return titleList;
+    }
+
+    public Long findMaxNttId() {
+        Long maxNttId = academicNewsRepository.findMaxNttId();
+        return maxNttId != null ? maxNttId : 0L;
     }
 }
