@@ -3,7 +3,6 @@ package com.fx.knutNotice.service.newsUpdateService;
 import com.fx.knutNotice.domain.EventNewsRepository;
 import com.fx.knutNotice.domain.entity.EventNews;
 import com.fx.knutNotice.dto.BoardDTO;
-import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +15,10 @@ public class EventNewsUpdateService {
     private final EventNewsRepository eventNewsRepository;
     private static long maxNttId = 0L;
 
-    public List<String> newsCheck(List<BoardDTO> newList) {
-
-        List<String> titleList = new ArrayList<>();
-
+    public void newsCheck(List<BoardDTO> newList) {
         //재시작시 사용
         if (maxNttId == 0L) {
-            maxNttId = findMaxNttId();
+            maxNttId = eventNewsRepository.findMaxNttId();
         }
 
         //기존 데이터 false로
@@ -46,9 +42,6 @@ public class EventNewsUpdateService {
                     .build();
                 eventNewsRepository.save(newEntity);
                 newCount++;
-
-                // FCM발송을 위해 업데이트된 제목만 LIST에 추가.
-                titleList.add(boardDTO.getTitle());
             }
         }
 
@@ -59,12 +52,5 @@ public class EventNewsUpdateService {
             Long minBoardNumber = eventNewsRepository.findMinBoardNumber();
             eventNewsRepository.deleteByBoardNumber(minBoardNumber);
         }
-
-        return titleList;
-    }
-
-    public Long findMaxNttId() {
-        Long maxNttId = eventNewsRepository.findMaxNttId();
-        return maxNttId != null ? maxNttId : 0L;
     }
 }
