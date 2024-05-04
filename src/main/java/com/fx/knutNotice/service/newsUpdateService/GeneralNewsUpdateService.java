@@ -3,6 +3,7 @@ package com.fx.knutNotice.service.newsUpdateService;
 import com.fx.knutNotice.domain.GeneralNewsRepository;
 import com.fx.knutNotice.domain.entity.GeneralNews;
 import com.fx.knutNotice.dto.BoardDTO;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,10 @@ public class GeneralNewsUpdateService {
     private final GeneralNewsRepository generalNewsRepository;
     private static long maxNttId = 0L;
 
-    public void newsCheck(List<BoardDTO> newList) {
+    public List<String> newsCheck(List<BoardDTO> newList) {
+
+        List<String> titleList = new ArrayList<>();
+
         //재시작시 사용
         if (maxNttId == 0L) {
             maxNttId = findMaxNttId();
@@ -44,6 +48,9 @@ public class GeneralNewsUpdateService {
                     .build();
                 generalNewsRepository.save(newEntity);
                 newCount++;
+
+                // FCM발송을 위해 업데이트된 제목만 LIST에 추가.
+                titleList.add(boardDTO.getTitle());
             }
         }
 
