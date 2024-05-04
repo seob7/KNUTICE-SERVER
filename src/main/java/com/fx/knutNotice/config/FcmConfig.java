@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class FcmConfig {
 
-    //https://velog.io/@haden/spring-fcm-server-%EC%84%A4%EC%A0%95#%ED%8C%8C%EC%9D%B4%EC%96%B4%EB%B2%A0%EC%9D%B4%EC%8A%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EC%A0%95
     @Value("${firebase.secret.key.path}")
     String fcmKeyPath;
 
