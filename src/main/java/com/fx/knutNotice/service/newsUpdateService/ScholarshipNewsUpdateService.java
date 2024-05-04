@@ -18,7 +18,7 @@ public class ScholarshipNewsUpdateService {
     public void newsCheck(List<BoardDTO> newList) {
         //재시작시 사용
         if (maxNttId == 0L) {
-            maxNttId = scholarshipNewsRepository.findMaxNttId();
+            maxNttId = findMaxNttId();
         }
 
         //기존 데이터 false로
@@ -52,5 +52,12 @@ public class ScholarshipNewsUpdateService {
             Long minBoardNumber = scholarshipNewsRepository.findMinBoardNumber();
             scholarshipNewsRepository.deleteByBoardNumber(minBoardNumber);
         }
+
+        return titleList;
+    }
+
+    public Long findMaxNttId() {
+        Long maxNttId = scholarshipNewsRepository.findMaxNttId();
+        return maxNttId != null ? maxNttId : 0L;
     }
 }

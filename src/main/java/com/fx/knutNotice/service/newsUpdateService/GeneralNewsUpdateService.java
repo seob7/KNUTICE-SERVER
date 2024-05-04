@@ -20,7 +20,7 @@ public class GeneralNewsUpdateService {
     public void newsCheck(List<BoardDTO> newList) {
         //재시작시 사용
         if (maxNttId == 0L) {
-            maxNttId = generalNewsRepository.findMaxNttId();
+            maxNttId = findMaxNttId();
         }
 
         //기존 데이터 false로
@@ -54,5 +54,12 @@ public class GeneralNewsUpdateService {
             Long minBoardNumber = generalNewsRepository.findMinBoardNumber();
             generalNewsRepository.deleteByBoardNumber(minBoardNumber);
         }
+
+        return titleList;
+    }
+
+    public Long findMaxNttId() {
+        Long maxNttId = generalNewsRepository.findMaxNttId();
+        return maxNttId != null ? maxNttId : 0L;
     }
 }
