@@ -63,7 +63,7 @@ public class AcademicNewsUpdateService {
         return titleList;
     }
 
-    public Long findMaxNttId() {
+    private Long findMaxNttId() {
         Long maxNttId = academicNewsRepository.findMaxNttId();
         return maxNttId != null ? maxNttId : 0L;
     }

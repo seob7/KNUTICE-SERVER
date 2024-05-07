@@ -63,7 +63,7 @@ public class EventNewsUpdateService {
         return titleList;
     }
 
-    public Long findMaxNttId() {
+    private Long findMaxNttId() {
         Long maxNttId = eventNewsRepository.findMaxNttId();
         return maxNttId != null ? maxNttId : 0L;
     }

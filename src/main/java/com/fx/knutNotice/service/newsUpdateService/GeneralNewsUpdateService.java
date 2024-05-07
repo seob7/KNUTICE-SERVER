@@ -65,7 +65,7 @@ public class GeneralNewsUpdateService {
         return titleList;
     }
 
-    public Long findMaxNttId() {
+    private Long findMaxNttId() {
         Long maxNttId = generalNewsRepository.findMaxNttId();
         return maxNttId != null ? maxNttId : 0L;
     }

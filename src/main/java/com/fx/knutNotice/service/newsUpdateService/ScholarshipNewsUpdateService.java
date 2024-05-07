@@ -63,7 +63,7 @@ public class ScholarshipNewsUpdateService {
         return titleList;
     }
 
-    public Long findMaxNttId() {
+    private Long findMaxNttId() {
         Long maxNttId = scholarshipNewsRepository.findMaxNttId();
         return maxNttId != null ? maxNttId : 0L;
     }
