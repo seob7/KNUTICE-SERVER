@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScholarshipNews {
+public class ScholarshipNews implements BaseNews{
 
 
     @Id

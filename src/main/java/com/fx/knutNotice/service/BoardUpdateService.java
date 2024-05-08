@@ -35,19 +35,19 @@ public class BoardUpdateService {
     @Scheduled(fixedDelay = 1000 * 60 * 60)// 60분마다 실행
     public void updateCheck() throws IOException, FirebaseMessagingException {
         List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
-            KnutURL.GENERAL_NEWS.articleURL());
+                KnutURL.GENERAL_NEWS.articleURL());
         List<String> updatedGeneralNewsTitle = generalNewsUpdateService.newsCheck(generalNewsList);
 
         List<BoardDTO> eventNewsList = knutCrawler.crawlBoard(KnutURL.EVENT_NEWS.URL(),
-            KnutURL.EVENT_NEWS.articleURL());
+                KnutURL.EVENT_NEWS.articleURL());
         List<String> updatedEventNewsTitle = eventNewsUpdateService.newsCheck(eventNewsList);
 
         List<BoardDTO> academicNewsList = knutCrawler.crawlBoard(KnutURL.ACADEMIC_NEWS.URL(),
-            KnutURL.ACADEMIC_NEWS.articleURL());
+                KnutURL.ACADEMIC_NEWS.articleURL());
         List<String> updatedAcademicNewsTitle = academicNewsUpdateService.newsCheck(academicNewsList);
 
         List<BoardDTO> scholarshipNewsList = knutCrawler.crawlBoard(KnutURL.SCHOLARSHIP_NEWS.URL(),
-            KnutURL.SCHOLARSHIP_NEWS.articleURL());
+                KnutURL.SCHOLARSHIP_NEWS.articleURL());
         List<String> updatedScholarshipNewsTitle = scholarshipNewsUpdateService.newsCheck(scholarshipNewsList);
 
         fcmTrigger(updatedGeneralNewsTitle, updatedEventNewsTitle, updatedAcademicNewsTitle, updatedScholarshipNewsTitle);
@@ -57,9 +57,9 @@ public class BoardUpdateService {
 
     //Front와 메시지 형식 상의 후 refactoring 진행
     private void fcmTrigger(List<String> updatedGeneralNewsTitle,
-        List<String> updatedEventNewsTitle,
-        List<String> updatedAcademicNewsTitle,
-        List<String> updatedScholarshipNewsTitle) throws FirebaseMessagingException {
+                            List<String> updatedEventNewsTitle,
+                            List<String> updatedAcademicNewsTitle,
+                            List<String> updatedScholarshipNewsTitle) throws FirebaseMessagingException {
         String updatedGeneralNewsTitles = String.join("\n", updatedGeneralNewsTitle);
         int updatedGeneralNewsCount = updatedGeneralNewsTitle.size();
 
@@ -74,16 +74,16 @@ public class BoardUpdateService {
 
         // FcmDTO 생성
         FcmDTO fcmDTO = FcmDTO.builder()
-            .title("일반 뉴스 총 " + updatedGeneralNewsCount + "개 업데이트\n" +
-                "이벤트 뉴스 총 " + updatedEventNewsCount + "개 업데이트\n" +
-                "학술 뉴스 총 " + updatedAcademicNewsCount + "개 업데이트\n" +
-                "장학 뉴스 총 " + updatedScholarshipNewsCount + "개 업데이트")
-            .content(
-                "일반 뉴스 업데이트:\n" + updatedGeneralNewsTitles + "\n" +
-                    "이벤트 뉴스 업데이트:\n" + updatedEventNewsTitles + "\n" +
-                    "학술 뉴스 업데이트:\n" + updatedAcademicNewsTitles + "\n" +
-                    "장학 뉴스 업데이트:\n" + updatedScholarshipNewsTitles + "\n")
-            .build();
+                .title("일반 뉴스 총 " + updatedGeneralNewsCount + "개 업데이트\n" +
+                        "이벤트 뉴스 총 " + updatedEventNewsCount + "개 업데이트\n" +
+                        "학술 뉴스 총 " + updatedAcademicNewsCount + "개 업데이트\n" +
+                        "장학 뉴스 총 " + updatedScholarshipNewsCount + "개 업데이트")
+                .content(
+                        "일반 뉴스 업데이트:\n" + updatedGeneralNewsTitles + "\n" +
+                                "이벤트 뉴스 업데이트:\n" + updatedEventNewsTitles + "\n" +
+                                "학술 뉴스 업데이트:\n" + updatedAcademicNewsTitles + "\n" +
+                                "장학 뉴스 업데이트:\n" + updatedScholarshipNewsTitles + "\n")
+                .build();
 
         fcmService.sendToAllDevices(fcmDTO);
     }

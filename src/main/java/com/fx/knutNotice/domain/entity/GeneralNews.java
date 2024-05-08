@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeneralNews {
+public class GeneralNews implements BaseNews{
 
 
     @Id
