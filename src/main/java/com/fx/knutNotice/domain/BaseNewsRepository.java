@@ -25,4 +25,7 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
 
     @Query(value = "SELECT MAX(a.nttId) FROM #{#entityName} a")
     Long findMaxNttId();
+
+    Object findTop3ByOrderByNttIdDescTitle();
+
 }
