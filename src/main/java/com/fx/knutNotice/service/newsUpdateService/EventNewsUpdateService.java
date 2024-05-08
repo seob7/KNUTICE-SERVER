@@ -11,6 +11,7 @@ final public class EventNewsUpdateService extends BaseNewsService<BaseNewsReposi
     public EventNewsUpdateService(EventNewsRepository repository) {
         super(repository);
     }
+
     @Override
     protected EventNews createEntity(final BoardDTO boardDTO) {
         EventNews newEntity = EventNews.builder()

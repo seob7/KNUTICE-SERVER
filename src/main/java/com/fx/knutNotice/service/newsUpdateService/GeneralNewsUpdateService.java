@@ -13,6 +13,7 @@ final public class GeneralNewsUpdateService extends BaseNewsService<BaseNewsRepo
     public GeneralNewsUpdateService(GeneralNewsRepository repository) {
         super(repository);
     }
+
     @Override
     protected GeneralNews createEntity(final BoardDTO boardDTO) {
         GeneralNews newEntity = GeneralNews.builder()
