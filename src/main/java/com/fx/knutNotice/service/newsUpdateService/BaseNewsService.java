@@ -37,7 +37,6 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
         for (BoardDTO boardDTO : newList) {
             //DB의 nttId(최신글)보다 크롤링한 nttId가 큰 경우 신규게시글로 판단
             if (boardDTO.getNttId() > COMPARE_MAX_NTTID) {
-                System.out.println(boardDTO.getTitle());
                 BaseNews newEntity = createEntity(boardDTO);
                 repository.save(newEntity);
                 newCount++;
@@ -60,7 +59,6 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
     private Long findMaxNttId() {
         Long maxNttId = repository.findMaxNttId();
-        System.out.println("max " + maxNttId);
         return maxNttId != null ? maxNttId : 0L;
     }
 
