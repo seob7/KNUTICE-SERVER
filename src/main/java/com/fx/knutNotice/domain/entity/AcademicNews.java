@@ -11,12 +11,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AcademicNews {
-
-
+@Builder
+public class AcademicNews implements BaseNews {
     @Id
     private Long nttId;
     private Long boardNumber;
@@ -28,5 +26,4 @@ public class AcademicNews {
     private String departName;
     private String registrationDate;
     private String newCheck;
-
 }

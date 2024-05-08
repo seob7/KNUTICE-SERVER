@@ -26,7 +26,7 @@ public class FcmController {
 
     @PostMapping("/sendAllMessage")
     public ResultForm pushMessage(@RequestBody FcmDTO requestDTO)
-        throws FirebaseMessagingException {
+            throws FirebaseMessagingException {
 
         fcmService.sendToAllDevices(requestDTO);
         return ResultForm.success(FcmMessage.SUCCESS_MESSAGE_SENT_TO_ALL.getDescription());
@@ -35,7 +35,7 @@ public class FcmController {
     @GetMapping("/getAllTokens")
     public ResultForm getAllTokens() {
         return ResultForm.success(FcmMessage.SUCCESS_ALL_TOKENS_RETRIEVED.getDescription(),
-            deviceTokenService.getAllTokens());
+                deviceTokenService.getAllTokens());
     }
 
     @PostMapping("/sendDeviceToken")
