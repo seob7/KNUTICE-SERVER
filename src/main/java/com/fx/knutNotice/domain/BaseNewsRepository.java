@@ -1,7 +1,7 @@
 package com.fx.knutNotice.domain;
 
+import com.fx.knutNotice.dto.RecentThreeTitleDTO;
 import java.util.List;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +28,7 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
     @Query(value = "SELECT MAX(a.nttId) FROM #{#entityName} a")
     Long findMaxNttId();
 
-    @Query(value ="SELECT a.title FROM #{#entityName} a ORDER BY a.nttId DESC LIMIT 3")
-    List<String> findRecent3Title();
+    @Query(value ="SELECT a.nttId as nttId, a.title as title, a.departName as departName, a.registrationDate as registrationDate"
+        + " FROM #{#entityName} a ORDER BY a.nttId DESC LIMIT 3")
+    List<RecentThreeTitleDTO> findRecent3Title();
 }
