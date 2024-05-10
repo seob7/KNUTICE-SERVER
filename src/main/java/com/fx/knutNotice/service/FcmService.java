@@ -14,17 +14,24 @@ import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.SendResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class FcmService {
+
+    private final String GENERAL_NEWS = "일반소식";
+    private final String EVENT_NEWS = "행사안내";
+    private final String ACADEMIC_NEWS = "학사공지사항";
+    private final String SCHOLARSHIP_NEWS = "장학안내";
 
     private final DeviceTokenRepository deviceTokenRepository;
     private final int MAX_DEVICES_PER_MESSAGE = 500;
@@ -84,4 +91,48 @@ public class FcmService {
             }
         }
     }
+
+    //Front와 메시지 형식 상의 후 refactoring 진행
+    public void fcmTrigger(List<String> updatedGeneralNewsTitle,
+        List<String> updatedEventNewsTitle, List<String> updatedAcademicNewsTitle,
+        List<String> updatedScholarshipNewsTitle) throws FirebaseMessagingException {
+
+        Map<String, List<String>> updatedNewsMap = initializeFcmTrigger(
+            updatedGeneralNewsTitle, updatedEventNewsTitle, updatedAcademicNewsTitle,
+            updatedScholarshipNewsTitle);
+
+        //sendFcmNotification 호출
+        for (Map.Entry<String, List<String>> entry : updatedNewsMap.entrySet()) {
+            List<String> titles = entry.getValue();
+
+            // titles 목록이 비어있지 않은 경우에만 sendFcmNotification 호출
+            if (!titles.isEmpty()) {
+                this.sendFcmNotification(entry.getKey(), titles);
+            }
+        }
+
+    }
+
+    @NotNull
+    private Map<String, List<String>> initializeFcmTrigger(List<String> updatedGeneralNewsTitle,
+        List<String> updatedEventNewsTitle, List<String> updatedAcademicNewsTitle,
+        List<String> updatedScholarshipNewsTitle) {
+        Map<String, List<String>> updatedNewsMap = new ConcurrentHashMap<>();
+        updatedNewsMap.put(GENERAL_NEWS, updatedGeneralNewsTitle);
+        updatedNewsMap.put(EVENT_NEWS, updatedEventNewsTitle);
+        updatedNewsMap.put(ACADEMIC_NEWS, updatedAcademicNewsTitle);
+        updatedNewsMap.put(SCHOLARSHIP_NEWS, updatedScholarshipNewsTitle);
+        return updatedNewsMap;
+    }
+
+    private void sendFcmNotification(String category, List<String> titles) throws FirebaseMessagingException {
+        for (String title : titles) {
+            FcmDTO fcmDTO = FcmDTO.builder()
+                .title(category)
+                .content(title)
+                .build();
+            this.sendToAllDevices(fcmDTO);
+        }
+    }
+
 }
