@@ -25,10 +25,10 @@ public class MainHomeService {
     private final AcademicNewsRepository academicNewsRepository;
 
     public MainForm showMainTopThreeTitle() {
-        List<RecentThreeTitleDTO> generalNewsRecent3Title = generalNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> scholarshipNewsRecent3Title = scholarshipNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> eventNewsRecent3Title = eventNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> academicNewsRecent3Title = academicNewsRepository.findRecent3Title();
+        final List<RecentThreeTitleDTO> generalNewsRecent3Title = generalNewsRepository.findRecent3Title();
+        final List<RecentThreeTitleDTO> scholarshipNewsRecent3Title = scholarshipNewsRepository.findRecent3Title();
+        final List<RecentThreeTitleDTO> eventNewsRecent3Title = eventNewsRepository.findRecent3Title();
+        final List<RecentThreeTitleDTO> academicNewsRecent3Title = academicNewsRepository.findRecent3Title();
 
         return new MainForm(generalNewsRecent3Title, scholarshipNewsRecent3Title,
             eventNewsRecent3Title, academicNewsRecent3Title);
