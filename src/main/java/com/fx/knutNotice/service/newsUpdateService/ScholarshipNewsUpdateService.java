@@ -20,7 +20,7 @@ final public class ScholarshipNewsUpdateService extends BaseNewsService<BaseNews
                 .title(boardDTO.getTitle())
                 .contentURL(boardDTO.getContentURL())
                 .content(boardDTO.getContent())
-//                .contentImage(boardDTO.getContentImage())
+                .contentImage(boardDTO.getContentImage())
                 .departName(boardDTO.getDepartName())
                 .registrationDate(boardDTO.getRegistrationDate())
                 .newCheck("true")
