@@ -1,9 +1,6 @@
 package com.fx.knutNotice.service;
 
-import com.fx.knutNotice.domain.AcademicNewsRepository;
-import com.fx.knutNotice.domain.EventNewsRepository;
-import com.fx.knutNotice.domain.GeneralNewsRepository;
-import com.fx.knutNotice.domain.ScholarshipNewsRepository;
+import com.fx.knutNotice.domain.*;
 import com.fx.knutNotice.dto.RecentThreeTitleDTO;
 import com.fx.knutNotice.web.form.ResponseForm.MainForm;
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public class MainHomeService {
     private final AcademicNewsRepository academicNewsRepository;
 
     public MainForm showMainTopThreeTitle() {
+
         List<RecentThreeTitleDTO> generalNewsRecent3Title = generalNewsRepository.findRecent3Title();
         List<RecentThreeTitleDTO> scholarshipNewsRecent3Title = scholarshipNewsRepository.findRecent3Title();
         List<RecentThreeTitleDTO> eventNewsRecent3Title = eventNewsRepository.findRecent3Title();
