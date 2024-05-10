@@ -42,8 +42,8 @@ public class KnutCrawler {
                 String contentURL = articleURL + "&nttId=" + nttId + "&bbsTyCode=&bbsAttrbCode=&mno=sitemap_12&kind=&pageIndex=1";
                 Document articleDocument = Jsoup.connect(contentURL).get();
                 Elements articleContent = articleDocument.select("div.bbs_detail_content");
-                String detailContent = articleContent.text();
-                String contentImage = articleContent.select("div.bbs_detail_content img").attr("src"); //이미지 추출
+                String detailContent = articleContent.html();
+//                String contentImage = articleContent.select("div.bbs_detail_content img").attr("src"); //이미지 추출
 
 
                 boardDTOList.add(BoardDTO.builder()
@@ -52,7 +52,7 @@ public class KnutCrawler {
                         .title(title)
                         .contentURL(contentURL)
                         .content(detailContent)
-                        .contentImage(contentImage)
+//                        .contentImage(contentImage)
                         .departName(departName)
                         .registrationDate(registrationDate)
                         .build());

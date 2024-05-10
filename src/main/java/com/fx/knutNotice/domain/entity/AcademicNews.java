@@ -22,7 +22,7 @@ public class AcademicNews implements BaseNews {
     private String contentURL;
     @Column(columnDefinition = "LONGTEXT")
     private String content;
-    private String contentImage;
+//    private String contentImage;
     private String departName;
     private String registrationDate;
     private String newCheck;
