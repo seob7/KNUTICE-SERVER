@@ -42,7 +42,7 @@ public class KnutCrawler {
                 String contentURL = articleURL + "&nttId=" + nttId + "&bbsTyCode=&bbsAttrbCode=&mno=sitemap_12&kind=&pageIndex=1";
                 Document articleDocument = Jsoup.connect(contentURL).get();
                 Elements articleContent = articleDocument.select("div.bbs_detail_content");
-                String detailContent = articleContent.text();
+                String detailContent = articleContent.html();
                 String contentImage = articleContent.select("div.bbs_detail_content img").attr("src"); //이미지 추출
 
 
