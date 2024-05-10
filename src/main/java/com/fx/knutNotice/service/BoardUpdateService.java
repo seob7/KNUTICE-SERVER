@@ -4,10 +4,7 @@ import com.fx.knutNotice.crawler.KnutCrawler;
 import com.fx.knutNotice.common.KnutURL;
 import com.fx.knutNotice.dto.BoardDTO;
 import com.fx.knutNotice.dto.FcmDTO;
-import com.fx.knutNotice.service.newsUpdateService.AcademicNewsUpdateService;
-import com.fx.knutNotice.service.newsUpdateService.EventNewsUpdateService;
-import com.fx.knutNotice.service.newsUpdateService.GeneralNewsUpdateService;
-import com.fx.knutNotice.service.newsUpdateService.ScholarshipNewsUpdateService;
+import com.fx.knutNotice.service.newsUpdateService.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,22 +33,32 @@ public class BoardUpdateService {
     public void updateCheck() throws IOException, FirebaseMessagingException {
         List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
                 KnutURL.GENERAL_NEWS.articleURL());
-        List<String> updatedGeneralNewsTitle = generalNewsUpdateService.newsCheck(generalNewsList);
+        List<String> updatedGeneralNewsTitle = getUpdatedNewsTitles(generalNewsList, generalNewsUpdateService);
 
         List<BoardDTO> eventNewsList = knutCrawler.crawlBoard(KnutURL.EVENT_NEWS.URL(),
                 KnutURL.EVENT_NEWS.articleURL());
-        List<String> updatedEventNewsTitle = eventNewsUpdateService.newsCheck(eventNewsList);
+        List<String> updatedEventNewsTitle = getUpdatedNewsTitles(eventNewsList, eventNewsUpdateService);
 
         List<BoardDTO> academicNewsList = knutCrawler.crawlBoard(KnutURL.ACADEMIC_NEWS.URL(),
                 KnutURL.ACADEMIC_NEWS.articleURL());
-        List<String> updatedAcademicNewsTitle = academicNewsUpdateService.newsCheck(academicNewsList);
+        List<String> updatedAcademicNewsTitle = getUpdatedNewsTitles(academicNewsList, academicNewsUpdateService);
 
         List<BoardDTO> scholarshipNewsList = knutCrawler.crawlBoard(KnutURL.SCHOLARSHIP_NEWS.URL(),
                 KnutURL.SCHOLARSHIP_NEWS.articleURL());
-        List<String> updatedScholarshipNewsTitle = scholarshipNewsUpdateService.newsCheck(scholarshipNewsList);
+        List<String> updatedScholarshipNewsTitle = getUpdatedNewsTitles(scholarshipNewsList, scholarshipNewsUpdateService);
 
         fcmTrigger(updatedGeneralNewsTitle, updatedEventNewsTitle, updatedAcademicNewsTitle, updatedScholarshipNewsTitle);
 
+    }
+
+    /**
+     * 새로운 뉴스의 제목을 반환.
+     *
+     * @param newsList
+     * @param newsUpdateService
+     */
+    private List<String> getUpdatedNewsTitles(List<BoardDTO> newsList, BaseNewsService newsUpdateService) {
+        return newsUpdateService.updateNews(newsList).getUpdateTitles();
     }
 
 

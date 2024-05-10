@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
-    private T repository;
+    private final T repository;
     private static Long ACADEMIC_MAX_NTT_ID = 0L;
     private static Long GENERAL_MAX_NTT_ID = 0L;
     private static Long SCHOLARSHIP_MAX_NTT_ID = 0L;
@@ -16,17 +16,16 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     private byte newCount = 0; // 2^8 = 256개
     private List<String> fcmTitles;
 
-    public BaseNewsService(T repository) {
+    public BaseNewsService(final T repository) {
         this.repository = repository;
     }
-
 
 
     /**
      * 초기화 작업.
      */
 
-    private void init() {
+    private void initializeTransaction() {
         repository.updateNewCheckToFalse();
         fcmTitles = new ArrayList<>();
     }
@@ -35,19 +34,22 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     /**
      * 새로운 게시글을 업데이트.
      */
-    public List<String> newsCheck(final List<BoardDTO> newList) {
-        init();
-        transaction(newList);
-        after();
-        return fcmTitles;
+    public BaseNewsService updateNews(final List<BoardDTO> newsList) {
+        initializeTransaction();
+        updateNewsTransaction(newsList);
+        finalizeTransaction();
+        return this;
     }
 
+    public List<String> getUpdateTitles() {
+        return fcmTitles;
+    }
     /**
      * 저장과 추가에 대한 하나의 트랜잭션
      */
-    private void transaction(final List<BoardDTO> newList) {
+    private void updateNewsTransaction(final List<BoardDTO> newsList) {
         final Long dbMaxNttID = getMaxNttId();
-        for (final BoardDTO boardDTO : newList) {
+        for (final BoardDTO boardDTO : newsList) {
             if (boardDTO.getNttId() > dbMaxNttID) {
                 saveNewsEntity(boardDTO);
                 addNewsTitle(boardDTO);
@@ -59,10 +61,7 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * for 문에서 참조로 전달한 crawling news 객체.
      */
     private void saveNewsEntity(final BoardDTO boardDTO) {
-
-        BaseNews newEntity = createEntity(boardDTO);
-        repository.save(newEntity);
-        newCount++;
+        repository.save(createEntity(boardDTO)); newCount++;
     }
 
     /**
@@ -132,13 +131,13 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
             return checkMaxNttId((byte) 1);
         } else if( repository instanceof EventNewsRepository) {
             return checkMaxNttId((byte) 2);
-        } else if(repository instanceof ScholarshipNewsRepository){
+        } else if( repository instanceof ScholarshipNewsRepository){
             return checkMaxNttId((byte) 3);
         }
         return 0L;
     }
 
-    public void after () {
+    public void finalizeTransaction () {
         deleteOldestNews();
     }
 
