@@ -3,7 +3,7 @@ package com.fx.knutNotice.dto;
 public interface
 RecentThreeTitleDTO {
 
-    String getNttId();
+    Long getNttId();
     String getTitle();
     String getDepartName();
     String getRegistrationDate();
