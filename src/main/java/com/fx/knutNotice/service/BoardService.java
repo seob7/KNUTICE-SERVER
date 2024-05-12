@@ -4,16 +4,12 @@ import com.fx.knutNotice.domain.AcademicNewsRepository;
 import com.fx.knutNotice.domain.EventNewsRepository;
 import com.fx.knutNotice.domain.GeneralNewsRepository;
 import com.fx.knutNotice.domain.ScholarshipNewsRepository;
-import com.fx.knutNotice.domain.entity.AcademicNews;
-import com.fx.knutNotice.domain.entity.EventNews;
-import com.fx.knutNotice.domain.entity.GeneralNews;
-import com.fx.knutNotice.domain.entity.ScholarshipNews;
+import com.fx.knutNotice.dto.NewsListDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,24 +21,24 @@ public class BoardService {
     private final EventNewsRepository eventNewsRepository;
     private final AcademicNewsRepository academicNewsRepository;
 
-    public List<GeneralNews> showGeneralNews() { //일반공지
-        List<GeneralNews> generalNews = generalNewsRepository.findAll();
-        return new ArrayList<>(generalNews);
+    public Page<NewsListDTO> showGeneralNewsList(Pageable pageable) { //일반공지
+        Page<NewsListDTO> generalNewsPageList = generalNewsRepository.findPaginationList(pageable);
+        return generalNewsPageList;
     }
 
-    public List<ScholarshipNews> showScholarshipNews() { //장학안내
-        List<ScholarshipNews> scholarshipNews = scholarshipNewsRepository.findAll();
-        return new ArrayList<>(scholarshipNews);
+    public Page<NewsListDTO> showScholarshipNews(Pageable pageable) { //장학안내
+        Page<NewsListDTO> scholarshipNewsPageList = scholarshipNewsRepository.findPaginationList(pageable);
+        return scholarshipNewsPageList;
     }
 
-    public List<EventNews> showEventNews() { //행사안내
-        List<EventNews> eventNews = eventNewsRepository.findAll();
-        return new ArrayList<>(eventNews);
+    public Page<NewsListDTO> showEventNews(Pageable pageable) { //행사안내
+        Page<NewsListDTO> eventNewsPageList = eventNewsRepository.findPaginationList(pageable);
+        return eventNewsPageList;
     }
 
-    public List<AcademicNews> showAcademicNews() { //학사공지사항
-        List<AcademicNews> academicNews = academicNewsRepository.findAll();
-        return new ArrayList<>(academicNews);
+    public Page<NewsListDTO> showAcademicNews(Pageable pageable) { //학사공지사항
+        Page<NewsListDTO> academicNewsPageList = academicNewsRepository.findPaginationList(pageable);
+        return academicNewsPageList;
     }
 
 
