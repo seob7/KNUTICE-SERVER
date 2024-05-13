@@ -1,9 +1,8 @@
 package com.fx.knutNotice.service;
 
 import com.fx.knutNotice.domain.*;
-import com.fx.knutNotice.dto.RecentThreeTitleDTO;
+import com.fx.knutNotice.dto.NewsListDTO;
 import com.fx.knutNotice.web.form.ResponseForm.MainForm;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +22,10 @@ public class MainHomeService {
 
     public MainForm showMainTopThreeTitle() {
 
-        List<RecentThreeTitleDTO> generalNewsRecent3Title = generalNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> scholarshipNewsRecent3Title = scholarshipNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> eventNewsRecent3Title = eventNewsRepository.findRecent3Title();
-        List<RecentThreeTitleDTO> academicNewsRecent3Title = academicNewsRepository.findRecent3Title();
+        List<NewsListDTO> generalNewsRecent3Title = generalNewsRepository.findRecent3Title();
+        List<NewsListDTO> scholarshipNewsRecent3Title = scholarshipNewsRepository.findRecent3Title();
+        List<NewsListDTO> eventNewsRecent3Title = eventNewsRepository.findRecent3Title();
+        List<NewsListDTO> academicNewsRecent3Title = academicNewsRepository.findRecent3Title();
 
         return new MainForm(generalNewsRecent3Title, scholarshipNewsRecent3Title,
             eventNewsRecent3Title, academicNewsRecent3Title);

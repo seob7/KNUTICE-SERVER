@@ -1,7 +1,6 @@
 package com.fx.knutNotice.domain;
 
 import com.fx.knutNotice.dto.NewsListDTO;
-import com.fx.knutNotice.dto.RecentThreeTitleDTO;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +32,7 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
 
     @Query(value ="SELECT a.nttId as nttId, a.title as title, a.departName as departName, a.registrationDate as registrationDate"
         + " FROM #{#entityName} a ORDER BY a.nttId DESC LIMIT 3")
-    List<RecentThreeTitleDTO> findRecent3Title();
+    List<NewsListDTO> findRecent3Title();
 
     @Query(value ="SELECT a.nttId as nttId, a.title as title, a.departName as departName, a.registrationDate as registrationDate"
         + " FROM #{#entityName} a")
