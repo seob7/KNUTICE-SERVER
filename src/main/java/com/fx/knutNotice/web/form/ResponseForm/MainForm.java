@@ -1,6 +1,6 @@
 package com.fx.knutNotice.web.form.ResponseForm;
 
-import com.fx.knutNotice.dto.RecentThreeTitleDTO;
+import com.fx.knutNotice.dto.NewsListDTO;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class MainForm {
 
-    private List<RecentThreeTitleDTO> generalNewsTopThreeTitle;
-    private List<RecentThreeTitleDTO> scholarshipNewsTopThreeTitle;
-    private List<RecentThreeTitleDTO> eventNewsTopThreeTitle;
-    private List<RecentThreeTitleDTO> academicNewsTopThreeTitle;
+    private List<NewsListDTO> generalNewsTopThreeTitle;
+    private List<NewsListDTO> scholarshipNewsTopThreeTitle;
+    private List<NewsListDTO> eventNewsTopThreeTitle;
+    private List<NewsListDTO> academicNewsTopThreeTitle;
 
 }
