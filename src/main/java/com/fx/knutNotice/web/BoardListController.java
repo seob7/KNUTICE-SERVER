@@ -2,7 +2,7 @@ package com.fx.knutNotice.web;
 
 import com.fx.knutNotice.common.ResponseMessage;
 import com.fx.knutNotice.dto.NewsListDTO;
-import com.fx.knutNotice.service.BoardService;
+import com.fx.knutNotice.service.BoardListService;
 import com.fx.knutNotice.web.form.ResultForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,9 +22,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Board Controller", description = "Board Controller API")
-public class BoardController {
+public class BoardListController {
 
-    private final BoardService boardService;
+    private final BoardListService boardListService;
 
     @GetMapping("/generalNews")
     @Operation(summary = "일반소식", description = "https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardList.do")
@@ -33,7 +33,7 @@ public class BoardController {
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0", in = ParameterIn.QUERY) @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "한 페이지당 항목 수", example = "20", in = ParameterIn.QUERY) @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("nttId").descending());
-        List<NewsListDTO> generalNewsList = boardService.showGeneralNewsList(pageable).getContent();
+        List<NewsListDTO> generalNewsList = boardListService.showGeneralNewsList(pageable).getContent();
         return ResultForm.success(ResponseMessage.SUCCESS_GENERAL_NEWS.getDescription(), generalNewsList);
     }
 
@@ -44,7 +44,7 @@ public class BoardController {
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0", in = ParameterIn.QUERY) @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "한 페이지당 항목 수", example = "20", in = ParameterIn.QUERY) @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("nttId").descending());
-        List<NewsListDTO> scholarshipNewsList = boardService.showScholarshipNews(pageable).getContent();
+        List<NewsListDTO> scholarshipNewsList = boardListService.showScholarshipNews(pageable).getContent();
         return ResultForm.success(ResponseMessage.SUCCESS_SCHOLARSHIP_NEWS.getDescription(), scholarshipNewsList);
     }
 
@@ -55,7 +55,7 @@ public class BoardController {
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0", in = ParameterIn.QUERY) @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "한 페이지당 항목 수", example = "20", in = ParameterIn.QUERY) @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("nttId").descending());
-        List<NewsListDTO> eventNewsList = boardService.showEventNews(pageable).getContent();
+        List<NewsListDTO> eventNewsList = boardListService.showEventNews(pageable).getContent();
         return ResultForm.success(ResponseMessage.SUCCESS_EVENT_NEWS.getDescription(), eventNewsList);
     }
 
@@ -66,7 +66,7 @@ public class BoardController {
         @Parameter(description = "페이지 번호 (0부터 시작)", example = "0", in = ParameterIn.QUERY) @RequestParam(defaultValue = "0") int page,
         @Parameter(description = "한 페이지당 항목 수", example = "20", in = ParameterIn.QUERY) @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("nttId").descending());
-        List<NewsListDTO> academicNewsList = boardService.showAcademicNews(pageable).getContent();
+        List<NewsListDTO> academicNewsList = boardListService.showAcademicNews(pageable).getContent();
         return ResultForm.success(ResponseMessage.SUCCESS_ACADEMIC_NEWS.getDescription(), academicNewsList);
     }
 
