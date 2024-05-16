@@ -10,7 +10,12 @@ public enum ResponseMessage {
 
 
     //MAIN PAGE
-    SUCCESS_MAIN_PAGE("메인 페이지 요청 성공");
+    SUCCESS_MAIN_PAGE("메인 페이지 요청 성공"),
+
+
+    //Exception
+    FAIL_NOT_FOUND_BOARD("존재하지 않는 게시글입니다.");
+
 
     private final String description;
 

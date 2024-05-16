@@ -1,5 +1,7 @@
 package com.fx.knutNotice.service;
 
+import com.fx.knutNotice.common.Exception.BoardExceptionAdvice;
+import com.fx.knutNotice.common.Exception.NotFountBoardException;
 import com.fx.knutNotice.domain.AcademicNewsRepository;
 import com.fx.knutNotice.domain.EventNewsRepository;
 import com.fx.knutNotice.domain.GeneralNewsRepository;
@@ -27,7 +29,7 @@ public class BoardDetailService {
 
     public BoardDTO showGeneralNewsDetail(Long nttId) {
         Optional<GeneralNews> generalNewsOptional = generalNewsRepository.findById(nttId);
-        GeneralNews detail = generalNewsOptional.orElseThrow();
+        GeneralNews detail = generalNewsOptional.orElseThrow(NotFountBoardException::new);
 
         BoardDTO boardDTO = convertToBoardDTO(detail);
 
@@ -36,7 +38,7 @@ public class BoardDetailService {
 
     public BoardDTO showScholarshipNewsDetail(Long nttId) { //장학안내
         Optional<ScholarshipNews> scholarshipNewsOptional = scholarshipNewsRepository.findById(nttId);
-        ScholarshipNews detail = scholarshipNewsOptional.orElseThrow();
+        ScholarshipNews detail = scholarshipNewsOptional.orElseThrow(NotFountBoardException::new);
         BoardDTO boardDTO = convertToBoardDTO(detail);
 
         return boardDTO;
@@ -44,7 +46,7 @@ public class BoardDetailService {
 
     public BoardDTO showEventNewsDetail(Long nttId) { //행사안내
         Optional<EventNews> eventNewsOptional = eventNewsRepository.findById(nttId);
-        EventNews detail = eventNewsOptional.orElseThrow();
+        EventNews detail = eventNewsOptional.orElseThrow(NotFountBoardException::new);
         BoardDTO boardDTO = convertToBoardDTO(detail);
 
         return boardDTO;
@@ -52,7 +54,7 @@ public class BoardDetailService {
 
     public BoardDTO showAcademicNewsDetail(Long nttId) { //학사공지사항
         Optional<AcademicNews> academicNewsOptional = academicNewsRepository.findById(nttId);
-        AcademicNews detail = academicNewsOptional.orElseThrow();
+        AcademicNews detail = academicNewsOptional.orElseThrow(NotFountBoardException::new);
         BoardDTO boardDTO = convertToBoardDTO(detail);
 
         return boardDTO;
