@@ -3,7 +3,7 @@ package com.fx.knutNotice.service;
 import com.fx.knutNotice.domain.DeviceTokenRepository;
 import com.fx.knutNotice.domain.entity.DeviceToken;
 import com.fx.knutNotice.dto.DeviceTokenDTO;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +24,10 @@ public class DeviceTokenService {
 
     public void saveDeviceToken(DeviceTokenDTO deviceTokenDTO) {
         deviceTokenRepository.save(DeviceToken.builder()
+            .id(deviceTokenDTO.getId())
             .token(deviceTokenDTO.getDeviceToken())
-            .registrationDate(LocalDateTime.now()) //토큰 관리 권장사항 -> 타임스탬프와 함께 앱 서버에 저장.
+            .registrationDate(LocalDate.now()) //토큰 관리 권장사항 -> 타임스탬프와 함께 서버에 저장.
             .build());
     }
+
 }
