@@ -23,7 +23,7 @@ public class ResultForm {
 
     public static ResultForm success(String message) {
         return ResultForm.builder()
-            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .statusCode(HttpStatus.OK.value())
             .message(message)
             .build();
     }
