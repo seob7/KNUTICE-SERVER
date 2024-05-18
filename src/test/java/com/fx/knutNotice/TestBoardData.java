@@ -37,9 +37,9 @@ public class TestBoardData {
                 GeneralNews generalNews = GeneralNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
-                    .title(i + "번 째 게시글 제목")
+                    .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
-                    .content(i + "번 째 글내용")
+                    .content(i + "게시글을 확인할 수 없습니다.")
                     .newCheck("true")
                     .build();
                 generalNewsRepository.save(generalNews);
@@ -51,9 +51,9 @@ public class TestBoardData {
                 EventNews eventNews = EventNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
-                    .title(i + "번 째 게시글 제목")
+                    .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
-                    .content(i + "번 째 글내용")
+                    .content(i + "게시글을 확인할 수 없습니다.")
                     .newCheck("true")
                     .build();
                 eventNewsRepository.save(eventNews);
@@ -65,9 +65,9 @@ public class TestBoardData {
                 ScholarshipNews scholarshipNews = ScholarshipNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
-                    .title(i + "번 째 게시글 제목")
+                    .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
-                    .content(i + "번 째 글내용")
+                    .content(i + "게시글을 확인할 수 없습니다.")
                     .newCheck("true")
                     .build();
                 scholarshipNewsRepository.save(scholarshipNews);
@@ -79,9 +79,9 @@ public class TestBoardData {
                 AcademicNews academicNews = AcademicNews.builder()
                     .nttId((long) i)
                     .boardNumber((long) i)
-                    .title(i + "번 째 게시글 제목")
+                    .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
-                    .content(i + "번 째 글내용")
+                    .content(i + "게시글을 확인할 수 없습니다.")
                     .newCheck("true")
                     .build();
                 academicNewsRepository.save(academicNews);
