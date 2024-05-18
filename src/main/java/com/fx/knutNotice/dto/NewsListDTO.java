@@ -4,6 +4,8 @@ public interface NewsListDTO {
 
     Long getNttId();
 
+    Long getBoardNumber();
+
     String getTitle();
 
     String getDepartName();
