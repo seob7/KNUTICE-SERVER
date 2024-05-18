@@ -12,4 +12,6 @@ public interface NewsListDTO {
 
     String getRegistrationDate();
 
+    String getContentImage();
+
 }
