@@ -31,9 +31,18 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// AWS Docker 오류로 인한 제외
+	// Exclude commons-logging to avoid conflicts
+	implementation ('org.springframework.boot:spring-boot-starter') {
+		exclude group: 'commons-logging', module: 'commons-logging'
+	}
+
+
 	//Firebase FCM
 	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+
+
 
 
 }
