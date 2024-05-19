@@ -14,4 +14,6 @@ public interface NewsListDTO {
 
     String getContentImage();
 
+    String getContentURL();
+
 }

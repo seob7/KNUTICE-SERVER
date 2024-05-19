@@ -1,6 +1,7 @@
 package com.fx.knutNotice.domain;
 
 import com.fx.knutNotice.dto.NewsListDTO;
+import com.fx.knutNotice.dto.NewsMainDTO;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,7 +37,8 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
     List<NewsMainDTO> findRecent3Title();
 
     @Query(value = "SELECT a.nttId as nttId, a.boardNumber as boardNumber, a.title as title,"
-        + " a.departName as departName, a.registrationDate as registrationDate, a.contentImage as contentImage"
+        + " a.departName as departName, a.registrationDate as registrationDate,"
+        + " a.contentImage as contentImage, a.contentURL as contentURL"
         + " FROM #{#entityName} a"
         + " WHERE a.boardNumber < :startBoardNumber"
         + " ORDER BY a.boardNumber DESC")
@@ -47,7 +49,8 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
      * 상위 20개의 리스트만 반환
      */
     @Query(value = "SELECT a.nttId as nttId, a.boardNumber as boardNumber, a.title as title,"
-        + " a.departName as departName, a.registrationDate as registrationDate, a.contentImage as contentImage"
+        + " a.departName as departName, a.registrationDate as registrationDate,"
+        + " a.contentImage as contentImage, a.contentURL as contentURL"
         + " FROM #{#entityName} a"
         + " ORDER BY a.boardNumber DESC")
     List<NewsListDTO> find20RecentNews(Pageable pageable);
