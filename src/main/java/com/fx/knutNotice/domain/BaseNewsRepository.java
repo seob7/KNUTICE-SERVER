@@ -30,9 +30,10 @@ public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
     @Query(value = "SELECT MAX(a.nttId) FROM #{#entityName} a")
     Long findMaxNttId();
 
-    @Query(value ="SELECT a.nttId as nttId, a.title as title, a.departName as departName, a.registrationDate as registrationDate"
+    @Query(value ="SELECT a.nttId as nttId, a.title as title, a.departName as departName,"
+        + " a.registrationDate as registrationDate, a.contentURL as contentURL"
         + " FROM #{#entityName} a ORDER BY a.nttId DESC LIMIT 3")
-    List<NewsListDTO> findRecent3Title();
+    List<NewsMainDTO> findRecent3Title();
 
     @Query(value = "SELECT a.nttId as nttId, a.boardNumber as boardNumber, a.title as title,"
         + " a.departName as departName, a.registrationDate as registrationDate, a.contentImage as contentImage"
