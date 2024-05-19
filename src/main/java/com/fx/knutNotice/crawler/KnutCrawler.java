@@ -45,6 +45,10 @@ public class KnutCrawler {
                 String detailContent = articleContent.html();
                 String contentImage = articleContent.select("div.bbs_detail_content img").attr("src"); //이미지 추출
 
+                // contentImage가 빈 문자열이면 null로 설정
+                if (contentImage.isEmpty()) {
+                    contentImage = null;
+                }
 
                 boardDTOList.add(BoardDTO.builder()
                         .nttId(Long.valueOf(nttId))
