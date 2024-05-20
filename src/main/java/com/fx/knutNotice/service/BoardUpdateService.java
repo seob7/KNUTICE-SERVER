@@ -29,7 +29,7 @@ public class BoardUpdateService {
     private final FcmService fcmService;
 
     @Transactional
-    @Scheduled(fixedDelay = 1000 * 60 * 60)// 60분마다 실행
+    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
     public void updateCheck() throws IOException, FirebaseMessagingException {
         List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
                 KnutURL.GENERAL_NEWS.articleURL());
