@@ -25,7 +25,8 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * 초기화 작업.
      */
 
-    private void initializeTransaction() {
+
+    private void initializeData() {
         fcmTitles = new ArrayList<>();
     }
 
@@ -34,9 +35,9 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * 새로운 게시글을 업데이트.
      */
     public BaseNewsService updateNews(final List<BoardDTO> newsList) {
-        initializeTransaction();
+        initializeData();
         updateNewsTransaction(newsList);
-        finalizeTransaction();
+        deleteOldestNews();
         return this;
     }
 
@@ -45,10 +46,14 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     }
     /**
      * 저장과 추가에 대한 하나의 트랜잭션
+     *
+     * 크롤링할때
+     * delete nttid 아이디로 지워지고 있는것.
      */
     private void updateNewsTransaction(final List<BoardDTO> newsList) {
         final Long dbMaxNttID = getMaxNttId();
         for (final BoardDTO boardDTO : newsList) {
+
             if (boardDTO.getNttId() > dbMaxNttID) {
                 saveNewsEntity(boardDTO);
                 addNewsTitle(boardDTO);
@@ -73,8 +78,10 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
     /**
      * 가장 오래된 news를 newCount(새로운 뉴스)개수 만큼 삭제.
+     * 저장을 하고 -> 지운다.
      */
-    private void deleteOldestNews() {
+    private void deleteOldNews() {
+        // 업데이트가 진행되는 뉴스만큼. minboardnumber를 지우는데
         for (int i = 0; i < newCount; i++) {
             final Long minBoardNumber = repository.findMinBoardNumber();
             repository.deleteByBoardNumber(minBoardNumber);
@@ -136,8 +143,8 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
         return 0L;
     }
 
-    public void finalizeTransaction () {
-        deleteOldestNews();
+    public void deleteOldestNews() {
+        deleteOldNews();
     }
 
 
