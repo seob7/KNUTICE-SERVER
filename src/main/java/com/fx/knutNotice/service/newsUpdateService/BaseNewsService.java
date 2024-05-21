@@ -26,7 +26,6 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      */
 
     private void initializeTransaction() {
-        repository.updateNewCheckToFalse();
         fcmTitles = new ArrayList<>();
     }
 

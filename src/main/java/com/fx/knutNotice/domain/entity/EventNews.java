@@ -27,6 +27,5 @@ public class EventNews implements BaseNews{
     private String contentImage;
     private String departName;
     private String registrationDate;
-    private String newCheck;
 
 }

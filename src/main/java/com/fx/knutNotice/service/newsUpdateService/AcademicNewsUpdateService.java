@@ -22,7 +22,6 @@ final public class AcademicNewsUpdateService extends BaseNewsService<BaseNewsRep
                 .contentImage(boardDTO.getContentImage())
                 .departName(boardDTO.getDepartName())
                 .registrationDate(boardDTO.getRegistrationDate())
-                .newCheck("true")
                 .build();
         return newEntity;
     }
