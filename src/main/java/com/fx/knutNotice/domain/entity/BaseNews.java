@@ -14,5 +14,4 @@ public interface BaseNews {
     String getContentImage();
     String getDepartName();
     String getRegistrationDate();
-    String getNewCheck();
 }

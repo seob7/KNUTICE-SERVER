@@ -19,9 +19,6 @@ import org.springframework.data.repository.query.Param;
  */
 @NoRepositoryBean
 public interface BaseNewsRepository<T, ID> extends JpaRepository<T, ID> {
-    @Modifying
-    @Query("UPDATE #{#entityName} a SET a.newCheck = 'false' WHERE a.newCheck = 'true'")
-    void updateNewCheckToFalse();
 
     void deleteByBoardNumber(Long boardNumber);
 

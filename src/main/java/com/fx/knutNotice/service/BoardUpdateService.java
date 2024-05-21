@@ -31,13 +31,13 @@ public class BoardUpdateService {
     @Transactional
     @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
     public void updateCheck() throws IOException, FirebaseMessagingException {
-        List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
-                KnutURL.GENERAL_NEWS.articleURL());
-        List<String> updatedGeneralNewsTitle = getUpdatedNewsTitles(generalNewsList, generalNewsUpdateService);
-
         List<BoardDTO> eventNewsList = knutCrawler.crawlBoard(KnutURL.EVENT_NEWS.URL(),
                 KnutURL.EVENT_NEWS.articleURL());
         List<String> updatedEventNewsTitle = getUpdatedNewsTitles(eventNewsList, eventNewsUpdateService);
+
+        List<BoardDTO> generalNewsList = knutCrawler.crawlBoard(KnutURL.GENERAL_NEWS.URL(),
+            KnutURL.GENERAL_NEWS.articleURL());
+        List<String> updatedGeneralNewsTitle = getUpdatedNewsTitles(generalNewsList, generalNewsUpdateService);
 
         List<BoardDTO> academicNewsList = knutCrawler.crawlBoard(KnutURL.ACADEMIC_NEWS.URL(),
                 KnutURL.ACADEMIC_NEWS.articleURL());

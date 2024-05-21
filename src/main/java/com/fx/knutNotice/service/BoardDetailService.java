@@ -72,7 +72,6 @@ public class BoardDetailService {
             .contentImage(detail.getContentImage())
             .departName(detail.getDepartName())
             .registrationDate(detail.getRegistrationDate())
-            .newCheck(detail.getNewCheck())
             .build();
         return boardDTO;
     }

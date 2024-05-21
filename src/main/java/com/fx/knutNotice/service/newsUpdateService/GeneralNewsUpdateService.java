@@ -25,7 +25,6 @@ final public class GeneralNewsUpdateService extends BaseNewsService<BaseNewsRepo
                 .contentImage(boardDTO.getContentImage())
                 .departName(boardDTO.getDepartName())
                 .registrationDate(boardDTO.getRegistrationDate())
-                .newCheck("true")
                 .build();
         return newEntity;
     }
