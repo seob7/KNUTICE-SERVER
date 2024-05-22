@@ -3,9 +3,12 @@ package com.fx.knutNotice.service.newsUpdateService;
 import com.fx.knutNotice.domain.*;
 import com.fx.knutNotice.domain.entity.BaseNews;
 import com.fx.knutNotice.dto.BoardDTO;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
     private final T repository;
@@ -34,9 +37,9 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     /**
      * 새로운 게시글을 업데이트.
      */
-    public BaseNewsService updateNews(final List<BoardDTO> newsList) {
+    public BaseNewsService updateNews(final List<BoardDTO> newsList, final byte type) {
         initializeData();
-        updateNewsTransaction(newsList);
+        updateNewsTransaction(newsList, type);
         deleteOldestNews();
         return this;
     }
@@ -50,16 +53,39 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * 크롤링할때
      * delete nttid 아이디로 지워지고 있는것.
      */
-    private void updateNewsTransaction(final List<BoardDTO> newsList) {
+    private void updateNewsTransaction(final List<BoardDTO> newsList, final byte type) {
         final Long dbMaxNttID = getMaxNttId();
         for (final BoardDTO boardDTO : newsList) {
-
             if (boardDTO.getNttId() > dbMaxNttID) {
                 saveNewsEntity(boardDTO);
                 addNewsTitle(boardDTO);
             }
         }
+
+        /**
+         * newsList isNotEmpty()인게 보장이 되므로, 따로 체크가 필요 없음.
+         */
+        changeMaxNttId(newsList.get(0).getNttId(), type);
+        
     }
+
+    private void changeMaxNttId(Long newNttId, byte type) {
+        switch (type) {
+            case 0:
+                ACADEMIC_MAX_NTT_ID = newNttId;
+                break;
+            case 1:
+                GENERAL_MAX_NTT_ID = newNttId;
+                break;
+            case 2:
+                EVENT_MAX_NTT_ID = newNttId;
+                break;
+            case 3:
+                SCHOLARSHIP_MAX_NTT_ID = newNttId;
+                break;
+        }
+    }
+
 
     /**
      * for 문에서 참조로 전달한 crawling news 객체.
@@ -81,7 +107,6 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * 저장을 하고 -> 지운다.
      */
     private void deleteOldNews() {
-        // 업데이트가 진행되는 뉴스만큼. minboardnumber를 지우는데
         for (int i = 0; i < newCount; i++) {
             final Long minBoardNumber = repository.findMinBoardNumber();
             repository.deleteByBoardNumber(minBoardNumber);
@@ -146,6 +171,7 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     public void deleteOldestNews() {
         deleteOldNews();
     }
+    
 
 
     /**

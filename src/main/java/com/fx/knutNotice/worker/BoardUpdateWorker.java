@@ -14,9 +14,6 @@ public class BoardUpdateWorker {
     private final ServiceFactory serviceFactory;
     public void updateBoardTitles (final List<BoardDTO> titles, final byte type){
         BaseNewsService baseNewsService = serviceFactory.getService(type);
-        baseNewsService.updateNews(titles).getUpdateTitles();
+        baseNewsService.updateNews(titles, type).getUpdateTitles();
     }
-
-    //        fcmService.fcmTrigger(updatedGeneralNewsTitle, updatedEventNewsTitle, updatedAcademicNewsTitle,
-//                updatedScholarshipNewsTitle);
 }
