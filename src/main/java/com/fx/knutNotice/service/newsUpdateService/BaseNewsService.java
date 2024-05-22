@@ -3,9 +3,12 @@ package com.fx.knutNotice.service.newsUpdateService;
 import com.fx.knutNotice.domain.*;
 import com.fx.knutNotice.domain.entity.BaseNews;
 import com.fx.knutNotice.dto.BoardDTO;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
     private final T repository;
@@ -60,7 +63,7 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
         }
 
         /**
-         * newsList가 isNotEmpty()인게 보장이 되므로, 따로 체크가 필요 없음.
+         * newsList isNotEmpty()인게 보장이 되므로, 따로 체크가 필요 없음.
          */
         changeMaxNttId(newsList.get(0).getNttId(), type);
         
@@ -104,7 +107,6 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * 저장을 하고 -> 지운다.
      */
     private void deleteOldNews() {
-        // 업데이트가 진행되는 뉴스만큼. minboardnumber를 지우는데
         for (int i = 0; i < newCount; i++) {
             final Long minBoardNumber = repository.findMinBoardNumber();
             repository.deleteByBoardNumber(minBoardNumber);
