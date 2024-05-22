@@ -4,6 +4,7 @@ package com.fx.knutNotice.worker;
 import com.fx.knutNotice.common.KnutURL;
 import com.fx.knutNotice.dto.BoardDTO;
 import com.fx.knutNotice.factory.KnutURLFactory;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -34,9 +35,8 @@ public class BoardCrawlingWorker {
 
 
     @Transactional
-//    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
-    @Scheduled(fixedDelay = 1000 * 30)
-    public void crawlBoard() throws IOException {
+    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
+    public void crawlBoard() throws IOException, FirebaseMessagingException {
         if(boot == false) {
             log.info("[Server] 처음 서버 크롤링 시작");
             deliverTitlesToWorker(List.of(getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type())),
@@ -213,7 +213,8 @@ public class BoardCrawlingWorker {
     private List<Serializable> setBoardUrls(final byte type) {
         return KnutURLFactory.getBoardURL(type);
     }
-    private void deliverTitlesToWorker(List<List<BoardDTO>> newsTitles) {
+    private void deliverTitlesToWorker(List<List<BoardDTO>> newsTitles)
+        throws FirebaseMessagingException {
         for (byte i = 0; i < boardLength; i++) {
             byte boardServiceType = i;
             log.info("게시글 타입 : " + boardServiceType + ", " + "\n" + "게시글이 비어있는지 여부 : " + newsTitles.get(i).isEmpty());
