@@ -35,23 +35,28 @@ public class BoardCrawlingWorker {
 
 
     @Transactional
-    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
+//    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
+    @Scheduled(fixedDelay = 1000*30) //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
     public void crawlBoard() throws IOException, FirebaseMessagingException {
         if(boot == false) {
             log.info("[Server] 처음 서버 크롤링 시작");
-            deliverTitlesToWorker(List.of(getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type())),
+            deliverTitlesToWorker(List.of(
                     getBoardFromKNUT(setBoardUrls(KnutURL.GENERAL_NEWS.type())),
+                    getBoardFromKNUT(setBoardUrls(KnutURL.SCHOLARSHIP_NEWS.type())),
                     getBoardFromKNUT(setBoardUrls(KnutURL.EVENT_NEWS.type())),
-                    getBoardFromKNUT(setBoardUrls(KnutURL.SCHOLARSHIP_NEWS.type()))));
+                    getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type()))
+            ));
             log.info("[Server] 처음 서버 크롤링 종료");
             boot = true;
 
         } else {
             log.info("[Server] 서버 크롤링 시작");
-            deliverTitlesToWorker(List.of(getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type())),
-                    getBoardFromKNUT(setBoardUrls(KnutURL.GENERAL_NEWS.type())),
-                    getBoardFromKNUT(setBoardUrls(KnutURL.EVENT_NEWS.type())),
-                    getBoardFromKNUT(setBoardUrls(KnutURL.SCHOLARSHIP_NEWS.type()))));
+            deliverTitlesToWorker(List.of(
+                getBoardFromKNUT(setBoardUrls(KnutURL.GENERAL_NEWS.type())),
+                getBoardFromKNUT(setBoardUrls(KnutURL.SCHOLARSHIP_NEWS.type())),
+                getBoardFromKNUT(setBoardUrls(KnutURL.EVENT_NEWS.type())),
+                getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type()))
+            ));
             log.info("[Server] 서버 크롤링 종료");
         }
     }

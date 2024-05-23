@@ -19,13 +19,13 @@ public class ServiceFactory {
         // 타입에 따라 줘버리자
         switch (type) {
             case 0:
-                return academicNewsUpdateService;
-            case 1:
                 return generalNewsUpdateService;
+            case 1:
+                return scholarshipNewsUpdateService;
             case 2:
                 return eventNewsUpdateService;
             case 3:
-                return scholarshipNewsUpdateService;
+                return academicNewsUpdateService;
             default:
                 throw new IllegalArgumentException("Not valid type");
         }

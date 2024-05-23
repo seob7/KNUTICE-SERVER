@@ -12,10 +12,10 @@ import java.util.List;
 public abstract class BaseNewsService<T extends BaseNewsRepository> {
 
     private final T repository;
-    private static Long ACADEMIC_MAX_NTT_ID = 0L;
     private static Long GENERAL_MAX_NTT_ID = 0L;
+    private static Long ACADEMIC_MAX_NTT_ID = 0L;
+    private static Long  EVENT_MAX_NTT_ID = 0L;
     private static Long SCHOLARSHIP_MAX_NTT_ID = 0L;
-    private static Long EVENT_MAX_NTT_ID = 0L;
     private byte newCount = 0; // 2^8 = 256개
     private List<String> fcmTitles;
 
@@ -72,16 +72,16 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     private void changeMaxNttId(Long newNttId, byte type) {
         switch (type) {
             case 0:
-                ACADEMIC_MAX_NTT_ID = newNttId;
+                GENERAL_MAX_NTT_ID = newNttId;
                 break;
             case 1:
-                GENERAL_MAX_NTT_ID = newNttId;
+                SCHOLARSHIP_MAX_NTT_ID = newNttId;
                 break;
             case 2:
                 EVENT_MAX_NTT_ID = newNttId;
                 break;
             case 3:
-                SCHOLARSHIP_MAX_NTT_ID = newNttId;
+                ACADEMIC_MAX_NTT_ID = newNttId;
                 break;
         }
     }
@@ -134,17 +134,17 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
     private Long checkMaxNttId(final byte type) {
         switch (type) {
             case 0:
-                if(ACADEMIC_MAX_NTT_ID == 0L) ACADEMIC_MAX_NTT_ID = findMaxNttId();
-                return ACADEMIC_MAX_NTT_ID;
-            case 1:
                 if(GENERAL_MAX_NTT_ID == 0L) GENERAL_MAX_NTT_ID = findMaxNttId();
                 return GENERAL_MAX_NTT_ID;
+            case 1:
+                if(SCHOLARSHIP_MAX_NTT_ID == 0L) SCHOLARSHIP_MAX_NTT_ID = findMaxNttId();
+                return SCHOLARSHIP_MAX_NTT_ID;
             case 2:
                 if(EVENT_MAX_NTT_ID == 0L) EVENT_MAX_NTT_ID = findMaxNttId();
                 return EVENT_MAX_NTT_ID;
             case 3:
-                if(SCHOLARSHIP_MAX_NTT_ID == 0L) SCHOLARSHIP_MAX_NTT_ID = findMaxNttId();
-                return SCHOLARSHIP_MAX_NTT_ID;
+                if(ACADEMIC_MAX_NTT_ID == 0L) ACADEMIC_MAX_NTT_ID = findMaxNttId();
+                return ACADEMIC_MAX_NTT_ID;
         }
         return -1L;
     }
@@ -156,13 +156,13 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
      * @return 특정 뉴스의 maxNttId
      */
     private Long getMaxNttId (){
-        if(repository instanceof AcademicNewsRepository) {
+        if(repository instanceof GeneralNewsRepository) {
             return checkMaxNttId((byte) 0);
-        } else if( repository instanceof GeneralNewsRepository) {
+        } else if( repository instanceof ScholarshipNewsRepository) {
             return checkMaxNttId((byte) 1);
         } else if( repository instanceof EventNewsRepository) {
             return checkMaxNttId((byte) 2);
-        } else if( repository instanceof ScholarshipNewsRepository){
+        } else if( repository instanceof AcademicNewsRepository){
             return checkMaxNttId((byte) 3);
         }
         return 0L;
