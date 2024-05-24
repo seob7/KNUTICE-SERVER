@@ -17,4 +17,5 @@ public class BoardDTO {
     private String contentImage;
     private String departName;
     private String registrationDate;
+    private byte boardType;
 }

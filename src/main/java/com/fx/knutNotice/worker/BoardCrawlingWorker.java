@@ -16,10 +16,16 @@ import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Configuration
@@ -49,12 +55,9 @@ public class BoardCrawlingWorker {
 
 
     @Transactional
-//    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
-    @Scheduled(fixedDelay = 1000*30) //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
+    @Scheduled(cron = "0 0 8-20 * * MON-FRI") //월요일부터 금요일까지 매 시간 정각마다 실행되지만 8시부터 20시까지만 실행
     public void scheduledBoardCrawl() throws IOException, FirebaseMessagingException {
-
         doCrawling();
-
         if (boot) {
             boot = false;
         }
@@ -63,13 +66,31 @@ public class BoardCrawlingWorker {
     /**
      * Crawling Method 통합.
      */
-    private void doCrawling() throws FirebaseMessagingException, IOException {
-        deliverTitlesToWorker(List.of(
-            getBoardFromKNUT(setBoardUrls(KnutURL.GENERAL_NEWS.type())),
-            getBoardFromKNUT(setBoardUrls(KnutURL.SCHOLARSHIP_NEWS.type())),
-            getBoardFromKNUT(setBoardUrls(KnutURL.EVENT_NEWS.type())),
-            getBoardFromKNUT(setBoardUrls(KnutURL.ACADEMIC_NEWS.type()))
-        ));
+    private void doCrawling() throws FirebaseMessagingException {
+
+        Collection<List<BoardDTO>> eachCrawledBoardPosts = Stream.of(
+                        KnutURL.GENERAL_NEWS,
+                        KnutURL.SCHOLARSHIP_NEWS,
+                        KnutURL.EVENT_NEWS,
+                        KnutURL.ACADEMIC_NEWS
+                )
+                .parallel()
+                .map(KnutURL::type)
+                .map(this::setBoardUrls)
+                .map(boardUrls -> {
+                    try {
+                        return getBoardFromKNUT(boardUrls);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+
+
+
+        if(eachCrawledBoardPosts.size() > 0) {
+          deliverTitlesToWorker(eachCrawledBoardPosts);
+        }
 
     }
 
@@ -86,6 +107,7 @@ public class BoardCrawlingWorker {
     
     private List<BoardDTO> searchDocumentation(List<Object> crawledData) throws IOException {
         boolean checkFirstBoardTitle = true;
+
         Elements contents = (Elements) crawledData.get(0);
         HtmlDocDTO htmlDocDTO = (HtmlDocDTO) crawledData.get(1);
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -124,17 +146,15 @@ public class BoardCrawlingWorker {
                 // 1. 서버가 처음 실행 될 때
                 // 2. 'N' 이미지 태그가 있고, 기존 첫 게시글의 제목과 새로 가져온 게시글이 같지 않다면
                 // 3. 'N' 이미지 태그가 있고, 기존 첫 게시글의 제목과 새로 가져온 게시글이 같지 않을때, 하위 게시글을 전부 가지고 옴.
-                getNewBoard(content, htmlDocDTO.getArticleURL(), nttId, boardDTOList);
+                getNewBoard(content, htmlDocDTO.getArticleURL(), nttId, boardDTOList, htmlDocDTO.getBoardType());
             }
         }
         return boardDTOList;
     }
 
     public List<Object> getHtmlDocumentation(final HtmlDocDTO htmlDocDTO) throws IOException{
-        // get HTML document
         Document document = Jsoup.connect(htmlDocDTO.getBoardURL()).get();
         Elements contents = document.select("tbody > tr");
-
         return List.of(contents, htmlDocDTO);
     }
 
@@ -157,7 +177,8 @@ public class BoardCrawlingWorker {
 
 
 
-    private void getNewBoard(Element content, String articleURL, String nttId, List<BoardDTO> boardDTOList) throws IOException {
+    private void getNewBoard(Element content, String articleURL, String nttId, List<BoardDTO> boardDTOList, byte boardType) throws IOException {
+
         String title = content.select("td.left > div > div > form > input[type=submit]").val();
         String boardNumber = content.select("td.problem_number").text();
 
@@ -187,20 +208,20 @@ public class BoardCrawlingWorker {
                 .contentImage(contentImage)
                 .departName(departName)
                 .registrationDate(registrationDate)
+                .boardType(boardType)
                 .build());
+
     }
 
     private List<Serializable> setBoardUrls(final byte type) {
         return KnutURLFactory.getBoardURL(type);
     }
-    private void deliverTitlesToWorker(List<List<BoardDTO>> newsTitles)
+    private void deliverTitlesToWorker(Collection<List<BoardDTO>> newPosts)
         throws FirebaseMessagingException {
-        for (byte i = 0; i < boardLength; i++) {
-            byte boardServiceType = i;
-            log.info("게시글 타입 : " + boardServiceType + ", " + "\n" + "게시글이 비어있는지 여부 : " + newsTitles.get(i).isEmpty());
-            // 각 게시글이 비어있지 않다면 게시글을 updateWorker 에서 처리.
-            if(!newsTitles.get(i).isEmpty())
-                boardUpdateWorker.updateBoardTitles(newsTitles.get(i), boardServiceType);
+        for (List<BoardDTO> eachBoards : newPosts) {
+            if(!eachBoards.isEmpty()) {
+                boardUpdateWorker.updateBoardTitles(eachBoards, eachBoards.get(0).getBoardType());
+            }
         }
     }
 }
