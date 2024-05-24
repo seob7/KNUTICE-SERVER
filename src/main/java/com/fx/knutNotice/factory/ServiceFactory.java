@@ -16,7 +16,6 @@ public class ServiceFactory {
     private final EventNewsUpdateService eventNewsUpdateService;
     private final ScholarshipNewsUpdateService scholarshipNewsUpdateService;
     public BaseNewsService getService(final byte type) {
-        // 타입에 따라 줘버리자
         switch (type) {
             case 0:
                 return generalNewsUpdateService;
