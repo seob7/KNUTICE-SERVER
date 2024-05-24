@@ -92,41 +92,35 @@ public class FcmService {
         }
     }
 
-    //Front와 메시지 형식 상의 후 refactoring 진행
-    public void fcmTrigger(List<String> updatedGeneralNewsTitle,
-        List<String> updatedEventNewsTitle, List<String> updatedAcademicNewsTitle,
-        List<String> updatedScholarshipNewsTitle) throws FirebaseMessagingException {
 
-        Map<String, List<String>> updatedNewsMap = initializeFcmTrigger(
-            updatedGeneralNewsTitle, updatedEventNewsTitle, updatedAcademicNewsTitle,
-            updatedScholarshipNewsTitle);
+    public void fcmTrigger(List<String> updateList, byte type) throws FirebaseMessagingException {
+        String category;
 
-        //sendFcmNotification 호출
-        for (Map.Entry<String, List<String>> entry : updatedNewsMap.entrySet()) {
-            List<String> titles = entry.getValue();
-
-            // titles 목록이 비어있지 않은 경우에만 sendFcmNotification 호출
-            if (!titles.isEmpty()) {
-                this.sendFcmNotification(entry.getKey(), titles);
-            }
+        switch (type) {
+            case 0:
+                category = GENERAL_NEWS;
+                break;
+            case 1:
+                category = SCHOLARSHIP_NEWS;
+                break;
+            case 2:
+                category = EVENT_NEWS;
+                break;
+            case 3:
+                category = ACADEMIC_NEWS;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid type: " + type);
         }
 
+        this.sendFcmNotification(category, updateList);
     }
 
-    @NotNull
-    private Map<String, List<String>> initializeFcmTrigger(List<String> updatedGeneralNewsTitle,
-        List<String> updatedEventNewsTitle, List<String> updatedAcademicNewsTitle,
-        List<String> updatedScholarshipNewsTitle) {
-        Map<String, List<String>> updatedNewsMap = new ConcurrentHashMap<>();
-        updatedNewsMap.put(GENERAL_NEWS, updatedGeneralNewsTitle);
-        updatedNewsMap.put(EVENT_NEWS, updatedEventNewsTitle);
-        updatedNewsMap.put(ACADEMIC_NEWS, updatedAcademicNewsTitle);
-        updatedNewsMap.put(SCHOLARSHIP_NEWS, updatedScholarshipNewsTitle);
-        return updatedNewsMap;
-    }
 
-    private void sendFcmNotification(String category, List<String> titles) throws FirebaseMessagingException {
+    private void sendFcmNotification(String category, List<String> titles)
+        throws FirebaseMessagingException {
         for (String title : titles) {
+            log.info("new! - {} : {}", category, title);
             FcmDTO fcmDTO = FcmDTO.builder()
                 .title(category)
                 .content(title)
@@ -134,5 +128,4 @@ public class FcmService {
             this.sendToAllDevices(fcmDTO);
         }
     }
-
 }
