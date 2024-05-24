@@ -16,8 +16,6 @@ import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
