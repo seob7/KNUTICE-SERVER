@@ -40,6 +40,9 @@ public class TestBoardData {
                     .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
                     .content(i + "게시글을 확인할 수 없습니다.")
+                    .contentImage(null)
+                    .departName("부서명")
+                    .registrationDate("2024-01-01")
                     .build();
                 generalNewsRepository.save(generalNews);
             }
@@ -53,6 +56,9 @@ public class TestBoardData {
                     .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
                     .content(i + "게시글을 확인할 수 없습니다.")
+                    .contentImage(null)
+                    .departName("부서명")
+                    .registrationDate("2024-01-01")
                     .build();
                 eventNewsRepository.save(eventNews);
             }
@@ -66,6 +72,9 @@ public class TestBoardData {
                     .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
                     .content(i + "게시글을 확인할 수 없습니다.")
+                    .contentImage(null)
+                    .departName("부서명")
+                    .registrationDate("2024-01-01")
                     .build();
                 scholarshipNewsRepository.save(scholarshipNews);
             }
@@ -79,6 +88,9 @@ public class TestBoardData {
                     .title(i + "게시글을 확인할 수 없습니다.")
                     .contentURL(i + "번 째 URL")
                     .content(i + "게시글을 확인할 수 없습니다.")
+                    .contentImage(null)
+                    .departName("부서명")
+                    .registrationDate("2024-01-01")
                     .build();
                 academicNewsRepository.save(academicNews);
             }
