@@ -111,6 +111,7 @@ public abstract class BaseNewsService<T extends BaseNewsRepository> {
             final Long minBoardNumber = repository.findMinBoardNumber();
             repository.deleteByBoardNumber(minBoardNumber);
         }
+        newCount = 0;
     }
 
 
