@@ -16,12 +16,13 @@ public class TokenWorker {
 
     /**
      * `0 0 0` : 자정(00:00:00)
-     * '* /2' : 두 달마다 실행
+     * '* /1' : 한 달마다 실행
      * '*' 매년 실행
+     * 최소 1달 ~ 2달 동안 DeviceToken 의 RegistrationDate 가 변경되지 않을 때 해당 토큰을 제거
      */
-    @Scheduled(cron = "0 0 0 1 */2 *")
+    @Scheduled(cron = "0 0 0 1 */1 *")
     public void tokenLifeCycle() {
-        LocalDate twoMonthsAgo = LocalDate.now().minusMonths(2);
+        LocalDate twoMonthsAgo = LocalDate.now().minusMonths(1);
         List<DeviceToken> oldTokens = deviceTokenRepository.findByRegistrationDateBefore(twoMonthsAgo);
         deleteToken(oldTokens);
     }
