@@ -183,8 +183,7 @@ public class BoardCrawlingWorker {
         String boardNumber = content.select("td.problem_number").text();
 
         String departName = content.select("td.problem_name").text();
-        String registrationDate = content.select("td.date").text();
-
+        String registrationDate = content.select("td.date").get(0).text();
 
         //nttId에 대한 내용 크롤링
         //nttId에 해당하는 게시글 URL
